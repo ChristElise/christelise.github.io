@@ -1,15 +1,15 @@
 ---
-title: "Custom Kali Linux Image ISO Creation"
+title: Custom Kali Linux Image ISO Creation
 date: 2024-08-25 00:00:00 +0300
-categories: [Cybersecurity, How-To Guide]
-tags: [kali, linux]    
+categories: [Cybersecurity, How-To-Guide]
+tags: [kali, linux]   
+author: christ
 ---
 
 # **Custom Kali Linux Image ISO Creation**
 
 This repository explains everything that a beginner hacker needs to know to build a custom Kali Linux ISO with his/her desired tools incorporated in the ISO file. Doing so increases efficiency because during every Kali Linux install all your desired tools will be integrated and there is no need to "apt-get install " anymore. Enjoy the post and have fun and don't forget to continue hacking.
 
----
 
 ### 1. Setting Up The Environment
 To start, we need to set up the Kali ISO build environment by installing and configuring the necessary packages using these commands.
