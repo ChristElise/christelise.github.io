@@ -16,17 +16,17 @@ timezone: Europe/Istanbul
 
 title: Christ Elise # the main title
 
-tagline: A text-focused Jekyll theme # it will display as the sub-title
+tagline: Christ Elise # it will display as the sub-title
 
 description: >- # used by seo meta and the atom feed
-  cybersecurity, hacking, kali, Linux, walkthrough, security
+  cybersecurity, security, hacking, kali, Linux, walkthrough, 
 
 # Fill in the protocol & hostname for your site.
 # e.g. 'https://username.github.io', note that it does not end with a '/'.
 url: "https://christelise.github.io"
 
 github:
-  username: Christ Elise # change to your github username
+  username: ChristElise # change to your github username
 
 twitter:
   username: twitter_username # change to your twitter username
