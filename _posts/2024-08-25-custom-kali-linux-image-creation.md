@@ -1,8 +1,8 @@
 ---
-[title]: "Custom Kali Linux Image ISO Creation"
-[date]: 2024-08-25 00:00:00 +03:00
-[categories]: [Cybersecurity, Ethical Hacking]
-[tags]: [cybersecurity, how-to, linux]
+title: "Custom Kali Linux Image ISO Creation"
+date: 2024-08-25 00:00:00 +0300
+categories: [Cybersecurity, How-To Guide]
+tags: [kali, linux]    
 ---
 
 # **Custom Kali Linux Image ISO Creation**
