@@ -1,18 +1,17 @@
 ---
 title: Custom Kali Linux Image ISO Creation
-date: 2024-08-25 00:00:00 +0300
+date: 2024-08-30 00:00:00 +0300
 categories: [Cybersecurity, How-To-Guide]
 tags: [kali, linux]   
 author: christ
 ---
 
-# **Custom Kali Linux Image ISO Creation**
 
 This repository explains everything that a beginner hacker needs to know to build a custom Kali Linux ISO image with their desired tools incorporated in the ISO image. Doing so increases efficiency because during every Kali Linux install, all your desired tools will be integrated and there is no need to "apt-get install" anymore for those specific tools. Enjoy the post and have fun. Don't forget to continue hacking.
 
 ---
 
-### 1. Setting Up The Environment
+## 1. Setting Up The Environment
 To start, we need to set up the building environment by installing and configuring the necessary packages using these commands.
 
 ```bash
@@ -32,7 +31,7 @@ auto  build_all.sh  build.sh  kali-config  README.md  simple-cdd
 ```
 Here, we can see three files and three folders but the most important for us is the **build.sh** bash script used to build our Kali Linux ISO from scratch and the **kali-config** which contains templates for carious Kali build flavour.
 
-### 2. Understanding the Directory Structure of the Repository
+## 2. Understanding the Directory Structure of the Repository
 
 This is where our journey begins because in this stage we will understand the different options we have to customise our custom Kali Linux image. To carry out this customisation, we first need to understand the folder structure in the **kali-config** folder. Let's discover the content of this interesting folder.
 ```bash
@@ -68,7 +67,7 @@ variant-light
 ```
 As we can see we have a **package-list** folder which contains the **kali.list.chroot** file. This file contains packages that are installed by default in the custom Kali Linux image and can be modified to include any tool that can be installed using ***apt install \<package name\>***.
 
-### 3. Getting Our Hands Dirty 
+## 3. Getting Our Hands Dirty 
 We have talked a lot of theory now it's time to use our understanding of the **live-build-config** directory structure to create our custom Kali Linux Image. This will be broken down into various steps. *NB: These steps are followed after installing dependencies and cloning the **live-build-config** from GitLab*.
 
 #### Step 1: Make Kali Install on its own
@@ -139,12 +138,19 @@ GENERATED KALI IMAGE: ./images/kali-linux-rolling-live-light-amd64.iso
 kali@pentester:~/live-build-config$ ls images           
 kali-linux-rolling-live-light-amd64.log   kali-linux-rolling-live-light-amd64.iso
 ```
-#### Step 5: Install Your Custom Kali 
+## 5. Conclusions 
 A script to automate all this process can be accessed using the link [Build Custom Kali](https://github.com/ChristElise/Custom-Linux-Iso-Creation/blob/main/build_custom_kali.sh), feel free to modify the script so that it can fit your needs. The final step is to install your custom Kali Linux image. By selecting the Start Installer option, Kali Linux will be installed using the prebuilt preseed script, which requires no user interaction. Alternatively, you also have the option to start it as a live system.
 ![Installation Screen](https://raw.githubusercontent.com/ChristElise/Custom-Linux-Iso-Creation/main/images/Installation%20Screen.png)
 
 Great news! You can now test your custom Kali Linux installation by tackling challenges on HackTheBox or TryHackMe.
-
 Thank you for taking the time to read this post!
+
+## References
+[The Kali Linux Dojo Workshop #1: Rolling Your Own - Generating Custom Kali Linux 2.0 ISOs](https://www.youtube.com/watch?v=mblbt02MSmE)<br>
+[Creating A Custom Kali ISO](https://www.kali.org/docs/development/live-build-a-custom-kali-iso/)<br>
+[Building Custom Kali ISOs](https://www.kali.org/docs/development/dojo-mastering-live-build/)<br>
+[Automating the installation using preseeding](https://www.debian.org/releases/bookworm/amd64/apb.en.html)<br>
+
+
 
 
