@@ -68,7 +68,7 @@ variant-light
 ```
 As we can see we have a **package-list** folder which contains the **kali.list.chroot** file. This file contains packages that are installed by default in the custom Kali Linux image and can be modified to include any tool that can be installed using ***apt install \<package name\>***.
 
-### 3. Getting Our Hands Dirty :yum:
+### 3. Getting Our Hands Dirty 
 We have talked a lot of theory now it's time to use our understanding of the **live-build-config** directory structure to create our custom Kali Linux Image. This will be broken down into various steps. *NB: These steps are followed after installing dependencies and cloning the **live-build-config** from GitLab*.
 
 #### Step 1: Make Kali Install on its own
