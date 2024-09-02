@@ -99,9 +99,3 @@ Great we have obtained root access to the machine, having this access means we o
 
 ## Conclusion
 Great, in this walkthrough we have learned how a simple file listing vulnerability could be used to take over a machine. In a real-world assessment, the last step will be to gather our findings and draft a report for our clients. Thanks for following up the walkthrough.
-
-
-
-
-
-
