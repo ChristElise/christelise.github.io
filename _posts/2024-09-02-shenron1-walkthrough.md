@@ -1,6 +1,6 @@
 ---
 title: CTF Walkthrough for VulnHub Machine Shenron 1
-date: 2024-08-30 00:00:00 +0300
+date: 2024-09-03 00:00:00 +0300
 categories: [Walkthrough, CTF]
 tags: [vulnhub, writeup, shenron, machines, pentest]   
 author: christ
