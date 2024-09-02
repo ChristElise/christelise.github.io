@@ -16,9 +16,9 @@ Difficulty: Beginner to Intermediate<br>
 Operating System: Linux<br>
 Download link: [Shenron-1](https://download.vulnhub.com/shenron/shenron-1.ova)<br>
 ### Tools used
-*Nmap<br>
-*Netcat<br>
-*Metasploit Framework<br>
+1) Nmap<br>
+2) Netcat<br>
+3) Metasploit Framework<br>
 ### Environment Set up
 A successful penetration tester is organised. Organisation facilitates documentation and makes our progress easily trackable. So to stay organised in this workshop we will create a directory tree to keep track of our progress. A good description of the use of each directory can be find [Here]().
 ![Working Dir](https://github.com/ChristElise/christelise.github.io/blob/main/assets/img/posts/walthrough/vulnhub/2024-09-02--shenron%3A1/working-dir.png)
