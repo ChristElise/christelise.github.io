@@ -32,10 +32,10 @@ Host discovery scan: ```sudo nmap -sn 10.0.2.15/24```<br><br>
 After identifying our target on the network we need to know what services are run by our target to create different possible attack scenarios. We can start a service scan on our target using Nmap with the command ```sudo nmap -sV -sC  10.0.2.4 -oA services-dis```
 ![Service Scan](https://raw.githubusercontent.com/ChristElise/christelise.github.io/main/assets/img/posts/walthrough/vulnhub/2024-09-02--shenron%3A1/service-scan.png)
 
-We can see that the target is running both an SSH server and an Apache web server. Web applications are known to contain many vulnerabilities so let's browse to the web application for further analyses. Unfortunately for us, we fall on the default Apache
+We can see that the target is running both an SSH server and an Apache web server. Web applications are known to contain many vulnerabilities so let's browse to the web application for further analyses. Unfortunately for us, we fall on the default Apache.
 ![Wep App Index Page](https://raw.githubusercontent.com/ChristElise/christelise.github.io/main/assets/img/posts/walthrough/vulnhub/2024-09-02--shenron%3A1/web%20app%20index%20page.png)
 
-In the real-world scenario, the default page might be left temporarily during the setup or testing phases of the web application. So let's try to find any hidden directories in the web application. I performed the fuzzing here using **ffuf** it can be done using your tool of preference.
+In a real-world scenario, the default page might be left temporarily during the setup or testing phases of the web application. So let's try to find any hidden directories in the web application. I performed the fuzzing here using **ffuf** it can be done using your tool of preference.
 Command used: ```ffuf -ic -w /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-small.txt -u http://10.0.2.4/FUZZ```<br>
 ![Directory Fuzzing](https://raw.githubusercontent.com/ChristElise/christelise.github.io/main/assets/img/posts/walthrough/vulnhub/2024-09-02--shenron%3A1/dir-fuzzing-1.png)
 
