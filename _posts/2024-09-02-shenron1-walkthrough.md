@@ -25,7 +25,7 @@ A successful penetration tester is organised. Organisation facilitates documenta
 
 ## Reconnaissance
 As in every penetration test, we need to identify our target on the network. We can do this by launching a quick host discovery scan against the network using Nmap. To perform the host verification we need to know our current subnet. We can perform this using the commands below:<br>
-Current subnet identification: ```bash ip a```<br>
+Current subnet identification: ```ip a```<br>
 Host discovery scan: ```sudo nmap -sn 10.0.2.15/24```<br><br>
 ![Host Identification](https://github.com/ChristElise/christelise.github.io/blob/main/assets/img/posts/walthrough/vulnhub/2024-09-02--shenron%3A1/target-dis.png)
 
