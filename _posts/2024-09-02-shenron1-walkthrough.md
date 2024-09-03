@@ -98,4 +98,4 @@ We can observe that this account can be used to run apt with root privilege. Let
 Great we have obtained root access to the machine, having this access means we own the machine and can do whatever we want. 
 
 ## Conclusion
-Great, in this walkthrough we have learned how a simple file listing vulnerability could be used to take over a machine. In a real-world assessment, the last step will be to gather our findings and draft a report for our clients. Thanks for following up the walkthrough.
+Great, in this walkthrough we have learned how a simple file listing vulnerability could be used to take over a machine. In a real-world assessment, the last step will be to gather our findings and draft a report for our clients. Thanks for following up on this walkthrough.
