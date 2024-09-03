@@ -18,7 +18,7 @@ Download link: [Shenron-2](https://download.vulnhub.com/shenron/shenron-2.ova)<b
 ### Tools used
 1) Nmap<br>
 2) Netcat<br>
-3) Metasploit Framework<br>
+
 ### Environment Set up
 To ensure success as a penetration tester, staying organised is crucial. Proper organisation streamlines documentation and tracking of progress. In this workshop, we will create a directory tree to systematically manage our work, with detailed descriptions of each directory's purpose available here.
 ![Working Dir](/assets/img/posts/walthrough/vulnhub/2024-09-02--shenron:2/working-dir.png)
@@ -44,6 +44,8 @@ After adding our target's domain to our /etc/hosts file we then access the login
 
 With access to the WordPress admin portal, I desperately tried to modify templates, upload plugins, or even modify existing plugins but it failed because the user running the WordPress instance doesn't have writing permission in the WordPress directory. Since all attempts to add a reverse shell code failed let's enumerate all installed plugins and their versions to see if the is one with a public exploit.
 ![Plugins Enumeraion](/assets/img/posts/walthrough/vulnhub/2024-09-02--shenron:2/plugins-enum.png)
+
+## Exploitation
 
 By making a quick Google search we get a hit on the Site Editor plugin version 1.1.1 which is vulnerable to LFI. Let's use this vulnerability to enumerate internal users in the system by reading the 
 /etc/passwd file.
