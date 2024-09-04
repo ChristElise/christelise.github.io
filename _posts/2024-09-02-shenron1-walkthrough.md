@@ -9,7 +9,7 @@ author: christ
 ## Introduction
 Greetings everyone, in this walkthrough, we will talk about Shenron 1 which is the first machine of the Vulnhub Shenron series machines. This walkthrough is not only meant to catch the flag but also to demonstrate how a penetration tester will approach this machine in a real-world assessment.
 This machine was set up using VirtualBox as recommended by the creator and the Network configuration was changed to 'Nat Network'.
-### Machine's Description
+### Machine Description
 Name: Shenron 1<br>
 Goal: Get two flags<br>
 Difficulty: Beginner to Intermediate<br>
