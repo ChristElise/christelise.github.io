@@ -7,7 +7,7 @@ author: christ
 ---
 
 ## Introduction
-Greetings everyone, in this walkthrough, we will talk about Shenron 1 which is the first machine of the Vulnhub Shenron series machines. This walkthrough is not only meant to catch the flag but also to demonstrate how a penetration tester will approach this machine in a real-world assessment.
+Greetings everyone, in this walkthrough, we will talk about Shenron 2 which is the second machine of the Vulnhub Shenron series machines. This walkthrough is not only meant to catch the flag but also to demonstrate how a penetration tester will approach this machine in a real-world assessment.
 This machine was set up using VirtualBox as recommended by the creator and the Network configuration was changed to 'Nat Network'.
 ### Machine Description
 Name: Shenron 2<br>
