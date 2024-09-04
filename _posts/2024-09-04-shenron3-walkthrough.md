@@ -25,10 +25,10 @@ To ensure success as a penetration tester, staying organised is crucial. Proper 
 ## Reconnaissance
 As in every penetration test, we need to identify our target on the network. We can do this by launching a quick host discovery scan against the network using Nmap. Remember that to perform the host verification you need to know your current subnet. I used to command below to identify live hosts on my network.<br>
 Host discovery scan: ```sudo nmap -sn 10.0.2.15/24```<br><br>
-![Target Discovery](/assets/img/posts/walthrough/vulnhub/2024-09-0-04-shenron:3/target-dis.png)
+![Target Discovery](/assets/img/posts/walthrough/vulnhub/2024-09-04-shenron%3A3/target-dis.png)
 
 After identifying our target on the network we need to know what services are run by our target to create different possible attack scenarios. We can start a service scan on our target using Nmap.  
-```sudo nmap -sV -sC  10.0.2.4 -oA services-dis```
+```sudo nmap -sV -sC  10.0.2.4 -oA services-dis```<br><br>
 ![Service Scan](/assets/img/posts/walthrough/vulnhub/2024-09-04-shenron:3/service-scan.png)
 
 From the scan result, we can see that the site runs WordPress. visiting the site proves that it uses WordPress and we can identify one user name 'admin'.
@@ -37,9 +37,12 @@ Those familiar with WordPress will know that the login portal is located in the 
 ![Host Config](/assets/img/posts/walthrough/vulnhub/2024-09-04-shenron:3/hosts-config.png)
 
 After adding it we can now browse to wp-admin where we see the WordPress login page.
-![WordPress Login](/assets/img/posts/walthrough/vulnhub/2024-09-04-shenron:3/wordpress-login.png)
+<p align="center">
+  <img src="/assets/img/posts/walthrough/vulnhub/2024-09-04-shenron:3/wordpress-login.png" alt="Description of Image" />
+</p>
 
-Upon trying, default credentials give no hit. We can notice after several login failure attempts that the is no protection against brute force so we may want to launch an automated brute-force attack against the login page. I used ffuf in this assessment but other tools as well can be used.
+### Exploitation
+Upon trying, default credentials give no hit. We can notice after several login failure attempts that the is no protection against brute force so we may want to launch an automated brute-force attack against the login page. I used ffuf in this assessment but other tools as well can be used. The raw_req.txt file simple contain a copy of the post request. This copy can be obtained from our browser or proxy application we used. I you want to use this method, replace the password parameter's value with FUZZ keyword before running ffuf.
 ![Password Bruteforce](/assets/img/posts/walthrough/vulnhub/2024-09-04-shenron:3/password-bruteforce-1.png)
 
 The bruteforce is successful and we obtain two hits, but one of this appears to be a false positive. With this access we can navigate to Appearrance -> Theme Editor and add a reverse shell in one page of and unused template. I selected the 404.php page from  the Twenty Fourteen template and added a PHP code that executes a Python reverse shell.
@@ -64,6 +67,7 @@ With this access we can read the user flag and further our enumeration.
 During the enumeration process we can notice that Shenron's home directory contains and executable with the SUID bit set for the root user. Running this executable displays thesame output displayed by the netstat command.
 ![File Enum 1](/assets/img/posts/walthrough/vulnhub/2024-09-04-shenron:3/file-enum-1.png)
 
+### Post Exploitation
 We can use the **file** command to identify the nature of the executable. We will notice that it's and ELF file and ELF (Executable and Linkable Format) files are partially readable, but the readability depends on the context and tools you use. Here, we can simply use cat to print the content of the file and see which commands it runs.
 ![File Examine](/assets/img/posts/walthrough/vulnhub/2024-09-04-shenron:3/file-examine-1.png)
 
