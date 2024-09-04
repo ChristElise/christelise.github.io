@@ -25,7 +25,7 @@ To ensure success as a penetration tester, staying organised is crucial. Proper 
 ![Working Dir](/assets/img/posts/walthrough/vulnhub/2024-09-02--shenron%3A1/working-dir.png)
 
 ## Reconnaissance
-As in every penetration test, we need to identify our target on the network. We can do this by launching a quick host discovery scan against the network using Nmap. To perform the host verification we need to know our current subnet. We can perform this using the commands below:<br>
+As in every penetration test, we need to identify our target on the network. We can do this by launching a quick host discovery scan against the network using Nmap. To perform the host verification we need to know our current subnet. We can perform these using the commands below:<br>
 Current subnet identification: ```ip a```<br>
 Host discovery scan: ```sudo nmap -sn 10.0.2.15/24```<br><br>
 ![Host Identification](/assets/img/posts/walthrough/vulnhub/2024-09-02--shenron%3A1/target-dis.png)
