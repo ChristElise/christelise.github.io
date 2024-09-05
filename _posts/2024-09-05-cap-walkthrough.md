@@ -62,7 +62,7 @@ With this credential, we can try to log in as the user Nathan on the SSH server 
 Let's use this access to read the user's flag.
 ![User Flag](/assets/img/posts/walthrough/hackthebox/2024-09-04-cap-htb/flag-1.png)
 
-### Post Exploitation
+## Post Exploitation
 With the credentials obtained above we have successfully compromised an account and set a foothold in the target, now it's time to escalate privileges. We can start a manual enumeration of all executables on the system with SUID bit set.<br>
 ```find / -perm -4000 -exec ls -l {} \; 2>/dev/null```<br><br>
 ![SUID Enumeration](/assets/img/posts/walthrough/hackthebox/2024-09-04-cap-htb/suid-enum.png)
