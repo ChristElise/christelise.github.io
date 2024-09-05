@@ -78,6 +78,6 @@ Finally, we can run the POC and obtain root privilege.
 ![Root Access](/assets/img/posts/walthrough/hackthebox/2024-09-04-cap-htb/root-access.png)
 
 ## Conclusion
-Congratulations, you have successfully obtained root access to this machine. This machine demonstrated how exposing sensitive information \(i.e. pcap files\) on an authentication free web application and keeping outdated versions of software can highly affect an enterprise's security. Thank you for reading this walkthrough.
+Congratulations! You have successfully obtained root access to this machine. This exercise has demonstrated how exposing sensitive information (e.g., pcap files) on an unauthenticated web application, combined with the use of outdated software versions, can significantly impact an enterprise's security. Thank you for reading this walkthrough.
 
 
