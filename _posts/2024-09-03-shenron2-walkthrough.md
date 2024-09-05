@@ -65,7 +65,7 @@ Since WordPress instances are associated with MySQL database let's hunt for MySQ
 The database credential doesn't seem to be related to any user so we can move to the next step and enumerate all accessible executables with SUID bit set on the system.
 ![SUID Binaries](/assets/img/posts/walthrough/vulnhub/2024-09-02--shenron:2/suid-enum.png)
 
-We identified a non-common executable with the root's SUID set. Upon examining the file, its content reveals that this file uses its SUID permission to make a copy of the bash executable in /mnt directory and set Shenron's SUID bit on it.
+We identified a non-common executable with the root's SUID set. Upon examining the file, its content reveals that this file uses its SUID permission to make a copy of the bash executable in the /mnt directory and set Shenron's SUID bit on it.
 ![File Examine](/assets/img/posts/walthrough/vulnhub/2024-09-02--shenron:2/file-examine-1.png)
 
 We can now execute /usr/bin/Execute to create the bash binary in /mnt with Shenron's SUID bit set. After that, we can execute the /mnt/bash binary to inherit Shenron's privileges.
