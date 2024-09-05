@@ -77,7 +77,7 @@ With Shenron's access, we can read the user flag in Sharon's home directory and 
 After reading the content of this file, we can see that it resembles encoded data. I tried various decoding algorithms and I finally got a hit while using base32.
 ![Decoding Pass](/assets/img/posts/walthrough/vulnhub/2024-09-02--shenron:2/password-decoding.png)
 
-###Post Exploitation
+## Post Exploitation
 We can use that password to log in using SSH as the user Shenron. After obtaining a full interactive session we can now check Shenron's sudo rights. 
 ![Sudo Rights](/assets/img/posts/walthrough/vulnhub/2024-09-02--shenron:2/sudo-right-1.png)
 
