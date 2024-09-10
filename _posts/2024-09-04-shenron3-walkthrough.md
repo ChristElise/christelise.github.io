@@ -3,7 +3,8 @@ title: CTF Walkthrough for VulnHub Machine Shenron 3
 date: 2024-09-04 00:00:00 +0300
 categories: [Walkthrough, CTF]
 tags: [vulnhub, writeup, shenron, machines, pentest]   
-author: christ
+image:
+  path: /assets/img/posts/walthrough/vulnhub/2024-09-04-shenron:3/box-shenron3.png
 ---
 ## Introduction
 Greetings everyone, in this walkthrough, we will talk about Shenron 3 which is the third and the last machine of the Vulnhub Shenron series machines. This walkthrough is not only meant to catch the flag but also to demonstrate how a penetration tester will approach this machine in a real-world assessment.
