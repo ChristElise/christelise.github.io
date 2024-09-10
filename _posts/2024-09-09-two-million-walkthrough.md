@@ -67,7 +67,7 @@ To have a good overview of the deobfuscated code we can copy and paste it into o
 We can now access the endpoint by making a POST request to it.
 ![](/assets/img/posts/walthrough/hackthebox/2024-09-09-two-million-htb/api-endpoint-access-0.png)
 From the JSON output return to us we see the key data contains an unreadable string and the key enctype which resembles 'encryption type' contains the string ROT13. Let's look online if there is any decryptor to decrypt this. 
-![](/assets/img/posts/walthrough/hackthebox/2024-09-09-two-million-htb/rot13-decryptor.png)
+![](/assets/img/posts/walthrough/hackthebox/2024-09-09-two-million-htb/rot13-decryptor.png){: .center }
 
 The decrypted text gives us a clear description of what we have to do to generate a valid invite code. Let's access the endpoint and generate our invite code.
 ![](/assets/img/posts/walthrough/hackthebox/2024-09-09-two-million-htb/invite-code-generated.png)
@@ -76,11 +76,11 @@ From our last request we obtained a base64 encrypted string in the code key of t
 echo -n REhUTEstTENVVTMtQTdNQTMtRTEzNzc= | base64 -d 
 ```
 ![](/assets/img/posts/walthrough/hackthebox/2024-09-09-two-million-htb/invite-code-decoded.png)
-We decrypted the valid invite code we generated previously with this code we can create an account and log into the application as a valid user
-![](/assets/img/posts/walthrough/hackthebox/2024-09-09-two-million-htb/creation-1.png)
-![](/assets/img/posts/walthrough/hackthebox/2024-09-09-two-million-htb/creation-2.png)
-![](/assets/img/posts/walthrough/hackthebox/2024-09-09-two-million-htb/creation-3.png)
-![](/assets/img/posts/walthrough/hackthebox/2024-09-09-two-million-htb/creation-4.png)
+We decrypted the valid invite code we generated previously with this code we can create an account and log into the application as a valid user.
+![](/assets/img/posts/walthrough/hackthebox/2024-09-09-two-million-htb/creation-1.png){: .center }
+![](/assets/img/posts/walthrough/hackthebox/2024-09-09-two-million-htb/creation-2.png){: .center }
+![](/assets/img/posts/walthrough/hackthebox/2024-09-09-two-million-htb/creation-3.png){: .center }
+![](/assets/img/posts/walthrough/hackthebox/2024-09-09-two-million-htb/creation-4.png){: .center }
 
 This looks like a custom application i.e created from the root so, there is no public vulnerability for it. The best thing we can do is to click around to understand how the application functions. We will come across the 'access' page which appears to generate VPN configuration files for our user. When we click on the 'Connection Pack' button, the web application makes a GET request to an API endpoint that generates a VPN configuration file for us. 
 ![](/assets/img/posts/walthrough/hackthebox/2024-09-09-two-million-htb/access-page.png)
@@ -112,7 +112,7 @@ After seeing this I did a lot of research on how to exploit this and I noticed t
 With this command injection vulnerability, we just discovered we can now execute a reverse shell on the target and catch this shell on the listener we set up on our attack host
 ![](/assets/img/posts/walthrough/hackthebox/2024-09-09-two-million-htb/payload-sent.png)
 ![](/assets/img/posts/walthrough/hackthebox/2024-09-09-two-million-htb/shell-catched.png)
-Great we obtained access to our target as the www-data user. We can use this user to enumerate web configuration files which may store database credentials. These configuration files are usually located in the th e web root's directory. When we list the content of the web root's directory, we see an interesting file named Database.php. Unfortunately, this file doesn't contain any form of variable but appears to use PHP environmental variables. 
+Great we obtained access to our target as the www-data user. We can use this user to enumerate web configuration files which may store database credentials. These configuration files are usually located in the web root's directory. When we list the content of the web root's directory, we see an interesting file named Database.php. Unfortunately, this file doesn't contain any form of variable but appears to use PHP environmental variables. 
 ![](/assets/img/posts/walthrough/hackthebox/2024-09-09-two-million-htb/fs-enum-1.png)
 If we list the web root with the -a option to uncover hidden files, we will see the file '.env' that contains the database user account's password and username.
 ![](/assets/img/posts/walthrough/hackthebox/2024-09-09-two-million-htb/fs-enum-2.png)
@@ -145,4 +145,4 @@ We follow the compilation by running the different executables in order, as desc
 Great the POC works as expected, with this access we own the system and we can read the root flag. If you want to get a better understanding of the vulnerability above, you can read through this [article](https://securitylabs.datadoghq.com/articles/overlayfs-cve-2023-0386/).
 
 ## Conclusion
-Congratulations! In this walkthrough, you have exploited an API to change your user account to that of an admin and then used that account to exploit a command injection vulnerability in an API endpoint used by admin users. You then leveraged this vulnerability to obtain a shell on the target as the www-data. After enumerating the system you obtained credentials for the admin user and used this to obtain access to the root account by leveraging a public vulnerability. This box demonstrated how improper handling of user input in a web application and poor maintenance of updates can significantly impact an organisation's security. Thanks for following up this walkthrough.
+Congratulations! In this walkthrough, you have exploited an API to change your user account to that of an admin and then used that account to exploit a command injection vulnerability in an API endpoint used by admin users. You then leveraged this vulnerability to obtain a shell on the target as the www-data. After enumerating the system you obtained credentials for the admin user and used this to obtain access to the root account by leveraging a public vulnerability. This box demonstrated how improper handling of user input in a web application and poor maintenance of updates can significantly impact an organisation's security. Thanks for following up on this walkthrough.
