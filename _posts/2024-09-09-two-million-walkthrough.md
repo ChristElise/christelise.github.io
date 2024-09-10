@@ -4,7 +4,7 @@ date: 2024-09-09 00:00:00 +0300
 categories: [Walkthrough, CTF]
 tags: [htb, writeup, two million, machines, pentest]   
 render_with_liquid: false
-img_path: /assets/img/posts/walthrough/hackthebox/2024-09-09-two-million-htb
+img_path: /assets/img/posts/walthrough/hackthebox/2024-09-09-two-million-htb/
 image:
   path: box-twomillion.png
 ---
