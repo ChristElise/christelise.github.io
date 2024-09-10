@@ -38,7 +38,7 @@ Those familiar with WordPress will know that the login portal is located in the 
 ![Host Config](/assets/img/posts/walthrough/vulnhub/2024-09-04-shenron:3/hosts-config.png)
 
 After adding it we can now browse to wp-admin where we see the WordPress login page.
-[WordPress Login](/assets/img/posts/walthrough/vulnhub/2024-09-04-shenron%3A3/wordpress-login.png") {: .center}
+![WordPress Login](/assets/img/posts/walthrough/vulnhub/2024-09-04-shenron:3/wordpress-login.png") {: .center}
 
 
 ## Exploitation
