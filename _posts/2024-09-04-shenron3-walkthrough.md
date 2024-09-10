@@ -38,9 +38,8 @@ Those familiar with WordPress will know that the login portal is located in the 
 ![Host Config](/assets/img/posts/walthrough/vulnhub/2024-09-04-shenron:3/hosts-config.png)
 
 After adding it we can now browse to wp-admin where we see the WordPress login page.
-<p align="center">
-  <img src="/assets/img/posts/walthrough/vulnhub/2024-09-04-shenron:3/wordpress-login.png" alt="Description of Image" />
-</p>
+[WordPress Login](/assets/img/posts/walthrough/vulnhub/2024-09-04-shenron:3/wordpress-login.png"){: center}
+
 
 ## Exploitation
 Upon trying, default credentials give no hit. We can notice after several login failure attempts that the is no protection against brute force so we may want to launch an automated brute-force attack against the login page. I used ffuf in this assessment but other tools as well can be used. The raw_req.txt file simply contains a copy of the post request. This copy can be obtained from our browser or the proxy application we used. I you want to use this method, replace the password parameter's value with the FUZZ keyword before running ffuf.
