@@ -80,7 +80,7 @@ This access gives us the ability to read the user flag on the system and continu
 
 ## Post Exploitation
 
-I tried several manual enumeration techniques and at the end, I enumerated the kernel version to see if the was any public exploit.
+I tried several manual enumeration techniques and at the end, I enumerated the kernel version to see if the was any public exploit available.<br>
 ![](/assets/img/posts/walthrough/vulnhub/2024-09-10-jangow/kernel-version.png){: .center}
 
 Looking online we can see that this specific kernel version appears to be vulnerable to CVE-2016-8655. Let's download the [POC](https://www.exploit-db.com/exploits/47170) of this exploit and upload it to our target.
