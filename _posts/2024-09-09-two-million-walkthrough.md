@@ -76,7 +76,7 @@ From our last request we obtained a base64 encrypted string in the code key of t
 echo -n REhUTEstTENVVTMtQTdNQTMtRTEzNzc= | base64 -d 
 ```
 ![](/assets/img/posts/walthrough/hackthebox/2024-09-09-two-million-htb/invite-code-decoded.png)
-We decrypted the valid invite code we generated previously with this code we can create an account and log into the application as a valid user.
+We decrypted the valid invite code we generated previously with this code we can create an account and log into the application as a valid user.<br>
 ![](/assets/img/posts/walthrough/hackthebox/2024-09-09-two-million-htb/creation-1.png){: .center }
 ![](/assets/img/posts/walthrough/hackthebox/2024-09-09-two-million-htb/creation-2.png){: .center }
 ![](/assets/img/posts/walthrough/hackthebox/2024-09-09-two-million-htb/creation-3.png){: .center }
