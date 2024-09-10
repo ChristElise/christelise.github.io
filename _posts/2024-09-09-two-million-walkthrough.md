@@ -61,7 +61,7 @@ From the above image, we can notice a javascript file named interestingly i.e. *
 <p align="center"><img src="/assets/img/posts/walthrough/hackthebox/2024-09-09-two-million-htb/obfuscated-js.png" alt="" /></p>
 
 From the above image, we notice that this script has been obfuscated by the web developer of this application. To understand the script we need to deobfuscate it. There are many online resources out there to deobfuscate Javascript code, one of them being [Unpacker](https://matthewfl.com/unPacker.html). To deobfuscate the code we need to copy it and paste it in the online tool. 
-<p align="center"><img src="/assets/img/posts/walthrough/hackthebox/2024-09-09-two-million-htb/js-deobfuscation.png" alt="" /></p>
+![Unpacker](/assets/img/posts/walthrough/hackthebox/2024-09-09-two-million-htb/js-deobfuscation.png)
 
 To have a good overview of the deobfuscated code we can copy and paste it into our text editor of choice. When we read through the code we can notice an interesting function named 'makeInviteCode'. From its name, we can understand that this function has a relationship with the creation of an invite code used by the web application. Upon reading the content of this function we can uncover an interesting API's endpoint that is intended to show us how to generate an invite code.
 ![JS Analyses 2](/assets/img/posts/walthrough/hackthebox/2024-09-09-two-million-htb/js-interesting-func.png)
