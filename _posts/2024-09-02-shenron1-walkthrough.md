@@ -3,8 +3,8 @@ title: CTF Walkthrough for VulnHub Machine Shenron 1
 date: 2024-09-03 00:00:00 +0300
 categories: [Walkthrough, CTF]
 tags: [vulnhub, writeup, shenron, machines, pentest]   
-author: christ
----
+image:
+  path: /assets/img/posts/walthrough/vulnhub/2024-09-02--shenron%3A1/box-shenron1.png
 
 ## Introduction
 Greetings everyone, in this walkthrough, we will talk about Shenron 1 which is the first machine of the Vulnhub Shenron series machines. This walkthrough is not only meant to catch the flag but also to demonstrate how a penetration tester will approach this machine in a real-world assessment.
