@@ -16,7 +16,9 @@ Operating System: Linux<br>
 Machine link: [Cap HTB](https://app.hackthebox.com/machines/Cap)<br>
 ### Tools used
 1) Nmap<br>
-2) ffuf
+2) ffuf<br>
+3) Wireshark<br>
+
 
 ## Reconnaissance
 First, we should note that this machine is not hosted locally i.e. it's being accessed by many other hackers that is why any traffic sent to the machine must be done intelligently to avoid useless crashes. This is why we will first start with a port discovering scan to uncover open ports on the target. The command used to perform this can be seen below.<br>
