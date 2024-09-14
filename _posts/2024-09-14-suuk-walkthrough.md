@@ -13,7 +13,7 @@ This machine was set up using VirtualBox as recommended by the creator and the N
 Name: Suuk<br>
 Goal: Get two flags<br>
 Operating System: Linux<br>
-Download link: [Suuk]()<br>
+Download link: [Suuk](https://downloads.hackmyvm.eu/suuk.zip)<br>
 ### Tools used
 1) fping<br>
 2) Nmap<br>
