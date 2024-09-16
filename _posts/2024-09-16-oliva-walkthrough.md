@@ -72,6 +72,8 @@ This file does not have any extension so, let's use the files command to obtain 
 oliva: LUKS encrypted file, ver 2, header size 16384, ID 3, algo sha256, salt 0x14fa423af24634e8..., UUID: 9a391896-2dd5-4f2c-84cf-1ba6e4e0577e, crc 0x6118d2d9b595355f..., at 0x1000 {"keyslots":{"0":{"type":"luks2","key_size":64,"af":{"type":"luks1","stripes":4000,"hash":"sha256"},"area":{"type":"raw","offse
 ```
 
+## Exploitation
+
 The file command reveals that this file is indeed a LUKS encrypted file. This may be our first time to hear about this, let's browse the web to understand what is LUKS encryption and if we can bruteforce it.
 ![](/assets/img/posts/walthrough/hackmyvm/2024-09-16-oliva/google-search-1.png)
 
