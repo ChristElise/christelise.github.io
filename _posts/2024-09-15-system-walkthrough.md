@@ -1,7 +1,7 @@
 ---
 title: CTF Walkthrough for HackMyVM Machine System
 category: [Walkthrough, CTF]
-tags: [hackmyvm, writeup, system, machines, local file inclusion, xxe]   
+tags: [HackMyVM, Writeup, System machine, Local File Inclusion, XXE]   
 image:
   path: /assets/img/posts/walthrough/hackmyvm/2024-09-15-system/box-system.png
 ---
