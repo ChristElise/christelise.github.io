@@ -2,7 +2,7 @@
 title: CTF Walkthrough for VulnHub Machine Shenron 3
 date: 2024-09-04 00:00:00 +0300
 categories: [Walkthrough, CTF]
-tags: [Vulnhub, Writeup, Shenron, Machine, WordPress]   
+tags: [Vulnhub, Writeup, Shenron 3 machine, WordPress]   
 image:
   path: /assets/img/posts/walthrough/vulnhub/2024-09-04-shenron:3/box-shenron3.png
 ---
