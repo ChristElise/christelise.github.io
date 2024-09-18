@@ -1,7 +1,7 @@
 ---
 title: CTF Walkthrough for HackMyVM Machine Medusa
 category: [Walkthrough, CTF]
-tags: [hackmyvm, writeup, medusa, machines, pentest]   
+tags: [hackmyvm, writeup, medusa, machines, local file inclusion, log poissoning]   
 image:
   path: /assets/img/posts/walthrough/hackmyvm/2024-09-12-medusa/box-medusa.png
 ---
