@@ -1,7 +1,7 @@
 ---
 title: CTF Walkthrough for Vulnhub Machine Jangow
 category: [Walkthrough, CTF]
-tags: [vulnhub, writeup, jangow, machines, command injection, kernel exploit]   
+tags: [Vulnhub, Writeup, Jangow machine, Command Injection, Kernel Exploit]   
 image:
   path: /assets/img/posts/walthrough/vulnhub/2024-09-10-jangow/box-jangow.png
 ---
