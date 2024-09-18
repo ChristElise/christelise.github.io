@@ -1,7 +1,7 @@
 ---
 title: CTF Walkthrough for HackMyVM Machine Zday
 category: [Walkthrough, CTF]
-tags: [hackmyvm, writeup, zday, machines, fog]   
+tags: [HackMyVM, Writeup, Zday machine]   
 image:
   path: /assets/img/posts/walthrough/hackmyvm/2024-09-11-zday/box-zday.png
 ---
