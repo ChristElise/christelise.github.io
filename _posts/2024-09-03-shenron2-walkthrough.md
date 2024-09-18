@@ -2,7 +2,7 @@
 title: CTF Walkthrough for VulnHub Machine Shenron 2
 date: 2024-09-03 00:00:00 +0300
 categories: [Walkthrough, CTF]
-tags: [vulnhub, writeup, shenron, machines, wordpress, bruteforce]   
+tags: [Vulnhub, Writeup, Shenron, Machine, WordPress, Local FIle Inclusion]   
 image:
   path: /assets/img/posts/walthrough/vulnhub/2024-09-02--shenron:2/box-shenron2.png
 ---
@@ -19,6 +19,7 @@ Download link: [Shenron-2](https://download.vulnhub.com/shenron/shenron-2.ova)<b
 ### Tools used
 1) Nmap<br>
 2) Netcat<br>
+3) Hydra<br>
 
 ### Environment Set up
 To ensure success as a penetration tester, staying organised is crucial. Proper organisation streamlines documentation and tracking of progress. In this workshop, we will create a directory tree to systematically manage our work, with detailed descriptions of each directory's purpose available here. 
@@ -53,7 +54,8 @@ By making a quick Google search we can see that the Site Editor plugin version 1
 /etc/passwd file.
 ![LFI Exploit](/assets/img/posts/walthrough/vulnhub/2024-09-02--shenron:2/lfi-vuln.png)
 
-Trying to gain access to the target through the two web applications failed so Let's try to access the system by force through brute-forcing of the SSH service with the usernames obtained through the LFI vulnerability above. 
+Trying to gain access to the target through the two web applications failed so, let's try to access the system by force through brute-forcing of the SSH service with the usernames obtained through the LFI vulnerability above. 
+
 ![Password BruteForce](/assets/img/posts/walthrough/vulnhub/2024-09-02--shenron:2/password-bruteforce-1.png)
 
 We got a hit for the user Jenny during the brute-force process so let's login to the target as the user Jenny.
