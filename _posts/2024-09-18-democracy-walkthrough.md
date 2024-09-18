@@ -1,7 +1,7 @@
 ---
 title: CTF Walkthrough for HackMyVM Machine Democracy
 category: [Walkthrough, CTF]
-tags: [hackmyvm, writeup, democracy, machines, sqli]   
+tags: [HackMyVM, Writeup, Democracy machine, SQLi]   
 image:
   path: /assets/img/posts/walthrough/hackmyvm/2024-09-18-democracy/box-democracy.png
 ---
