@@ -2,7 +2,7 @@
 title: CTF Walkthrough for VulnHub Machine Shenron 1
 date: 2024-09-03 00:00:00 +0300
 categories: [Walkthrough, CTF]
-tags: [Vulnhub, Writeup, Shenron, Machine, Joomla]   
+tags: [Vulnhub, Writeup, Shenron 1 machine, Joomla]   
 image:
    path: /assets/img/posts/walthrough/vulnhub/2024-09-02--shenron%3A1/box-shenron1.png
 ---
