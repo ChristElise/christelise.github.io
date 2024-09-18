@@ -2,7 +2,7 @@
 title: CTF Walkthrough for VulnHub Machine Shenron 3
 date: 2024-09-04 00:00:00 +0300
 categories: [Walkthrough, CTF]
-tags: [vulnhub, writeup, shenron, machines, wordpress]   
+tags: [Vulnhub, Writeup, Shenron, Machine, WordPress]   
 image:
   path: /assets/img/posts/walthrough/vulnhub/2024-09-04-shenron:3/box-shenron3.png
 ---
@@ -18,7 +18,8 @@ Download link: [Shenron-3](https://download.vulnhub.com/shenron/shenron-3.ova)<b
 ### Tools used
 1) Nmap<br>
 2) Netcat<br>
-3) ffuf
+3) ffuf<br>
+
 ### Environment Set up
 To ensure success as a penetration tester, staying organised is crucial. Proper organisation streamlines documentation and tracking of progress. In this workshop, we will create a directory tree to systematically manage our work, with detailed descriptions of each directory's purpose available here. 
 ![Working Dir](/assets/img/posts/walthrough/vulnhub/2024-09-04-shenron:3/working-dir.png)
@@ -33,7 +34,7 @@ After identifying our target on the network we need to know what services are ru
 ![Service Scan](/assets/img/posts/walthrough/vulnhub/2024-09-04-shenron:3/service-scan.png)
 
 From the scan result, we can see that the site runs WordPress. visiting the site proves that it uses WordPress and we can identify one user name 'admin'.
-Those familiar with WordPress will know that the login portal is located in the administrator directory. Upon browsing to this directory it will redirect us to the domain named 'shenron' So let's add a new line in the /etc/hosts file.
+Those familiar with WordPress will know that the login portal is located in the administrator directory. Upon browsing this directory it will redirect us to the domain named 'shenron' So let's add a new line in the /etc/hosts file.
 ![First Browse](/assets/img/posts/walthrough/vulnhub/2024-09-04-shenron:3/first-browse.png)
 ![Host Config](/assets/img/posts/walthrough/vulnhub/2024-09-04-shenron:3/hosts-config.png)
 
@@ -80,7 +81,3 @@ Let's now execute the network command which has the root SUID bit set on it.
 
 ## Conclusion
 Great, In this walkthrough, you explored how exploiting weak credentials in web applications and password reuse, combined with other bad practices such as using relative paths instead of absolute paths, can lead to a complete target takeover. In a real-world assessment, the last step will be to gather our findings and draft a report for our clients. Thanks for following up on this walkthrough.
-
-
-
-
