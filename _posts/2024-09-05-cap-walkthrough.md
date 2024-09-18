@@ -2,7 +2,7 @@
 title: CTF Walkthrough for HTB Machine Cap
 date: 2024-09-05 00:00:00 +0300
 categories: [Walkthrough, CTF]
-tags: [htb, writeup, cap, machines, idor]   
+tags: [HTB, Writeup, Cap machine, IDOR]   
 image:
   path: /assets/img/posts/walthrough/hackthebox/2024-09-04-cap-htb/box-cap.webp
 ---
