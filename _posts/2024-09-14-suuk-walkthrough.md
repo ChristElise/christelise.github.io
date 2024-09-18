@@ -1,7 +1,7 @@
 ---
 title: CTF Walkthrough for HackMyVM Machine Suuk
 category: [Walkthrough, CTF]
-tags: [hackmyvm, writeup, medusa, machines, pentest]   
+tags: [hackmyvm, writeup, medusa, machines, insecure file upload]   
 image:
   path: /assets/img/posts/walthrough/hackmyvm/2024-09-14-suuk/box-suuk.png
 ---
