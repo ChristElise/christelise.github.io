@@ -1,7 +1,7 @@
 ---
 title: CTF Walkthrough for Vulnhub Machine Earth 
 category: [Walkthrough, CTF]
-tags: [vulnhub, writeup, earth, machines, pentest]   
+tags: [vulnhub, writeup, earth, machines, suid]   
 image:
   path: /assets/img/posts/walthrough/vulnhub/2024-09-11-earth/box-earth.png
 ---
