@@ -18,6 +18,7 @@ Download link: [Locker](https://downloads.hackmyvm.eu/locker.zip)<br>
 1) Nmap<br>
 3) ffuf<br>
 4) Netcat<br>
+5) Zaproxy<br>
 
 ## Reconnaissance
 
