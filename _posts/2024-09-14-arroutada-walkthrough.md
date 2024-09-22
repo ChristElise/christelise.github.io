@@ -1,7 +1,7 @@
 ---
 title: CTF Walkthrough for HackMyVM Machine Arroutada
 category: [Walkthrough, CTF]
-tags: [HackMyVM, Writeup, Arroutada machine]   
+tags: [HackMyVM, Writeup, Password Cracking]   
 image:
   path: /assets/img/posts/walthrough/hackmyvm/2024-09-14-arroutada/box-arroutada.png
 ---
