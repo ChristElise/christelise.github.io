@@ -1,7 +1,7 @@
 ---
 title: CTF Walkthrough for HackMyVM Machine Away
 category: [Walkthrough, CTF]
-tags: [HackMyVM, Writeup]   
+tags: [HackMyVM, Writeup, Capabilities]   
 image:
   path: /assets/img/posts/walthrough/hackmyvm/2024-09-22-away/box-away.png
 ---
