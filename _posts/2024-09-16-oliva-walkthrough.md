@@ -1,7 +1,7 @@
 ---
 title: CTF Walkthrough for HackMyVM Machine Oliva
 category: [Walkthrough, CTF]
-tags: [HackMyVM, Writeup, Oliva machine]   
+tags: [HackMyVM, Writeup, Capabilities]   
 image:
   path: /assets/img/posts/walthrough/hackmyvm/2024-09-16-oliva/box-oliva.png
 ---
