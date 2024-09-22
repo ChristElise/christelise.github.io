@@ -1,7 +1,7 @@
 ---
 title: CTF Walkthrough for Vulnhub Machine Earth 
 category: [Walkthrough, CTF]
-tags: [Vulnhub, Writeup, Earth machine]   
+tags: [Vulnhub, Writeup, Sensitive Data Exposure, Reverse Engineering]   
 image:
   path: /assets/img/posts/walthrough/vulnhub/2024-09-11-earth/box-earth.png
 ---
@@ -247,7 +247,7 @@ puts("RESET FAILED, ALL TRIGGERS ARE N"...RESET FAILED, ALL TRIGGERS ARE NOT PRE
 )                                                      = 44
 +++ exited (status 0) +++
 ```
-We see that the ```access()``` function from the C standard library is used by the executable. This function is used to check the accessibility of a file. The access function takes a file/folder name and a mode, The 0 in here means it is checking for the existence of the file. From the message written by the ```puts()``` we can understand that if the checking process fails the reset will also fail. Our objective is to reset the root password to Earth in order to take over the machine. We can do this by creating fake files on our target having these names.
+We see that the ```access()``` function from the C standard library is used by the executable. This function is used to check the accessibility of a file. The access function takes a file/folder name and a mode, The 0 in here means it is checking for the existence of the file. From the message written by the ```puts()``` we can understand that if the checking process fails the reset will also fail. Our objective is to reset the root password to Earth to take over the machine. We can do this by creating fake files on our target having these names.
 ```bash
 mkdir /dev/shm
 touch /dev/shm/kHgTFI5G
