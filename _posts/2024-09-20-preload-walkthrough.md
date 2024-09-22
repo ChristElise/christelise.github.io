@@ -1,7 +1,7 @@
 ---
 title: CTF Walkthrough for HackMyVM Machine Preload
 category: [Walkthrough, CTF]
-tags: [HackMyVM, Writeup, Preload machine, SSTI]   
+tags: [HackMyVM, Writeup, SSTI]   
 image:
   path: /assets/img/posts/walthrough/hackmyvm/2024-09-20-preload/box-preload.png
 ---
