@@ -16,10 +16,10 @@ OS: Linux<br>
 Download link: [Stardust](https://downloads.hackmyvm.eu/stardust.zip)<br>
 ### Tools used
 1) Nmap<br>
-3) ffuf<br>
-4) Netcat<br>
-5) Zaproxy<br>
-6) John
+2) ffuf<br>
+3) Netcat<br>
+4) Zaproxy<br>
+5) John
 
 ## Reconnaissance
 
