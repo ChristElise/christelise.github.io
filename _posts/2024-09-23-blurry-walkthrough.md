@@ -132,7 +132,7 @@ File Store: http://files.blurry.htb
 Verifying credentials ...
 Credentials verified!
 
-New configuration stored in /home/whitemiller/clearml.conf
+New configuration stored in /home/pentester/clearml.conf
 ClearML setup completed successfully.
 ```
 
