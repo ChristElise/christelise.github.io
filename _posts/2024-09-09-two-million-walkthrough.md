@@ -19,7 +19,7 @@ Machine link: [Two Million HTB](https://app.hackthebox.com/machines/TwoMillion)<
 2) ffuf<br>
 3) Unpacker<br>
 
-## Reconnaisance
+## Reconnaissance
 We will start by enumerating all opened ports on our target. This is done using the port scanning tool Nmap.
 ```bash
 sudo nmap -n -Pn 10.10.11.221 -sS -oN ports-scan.nmap
