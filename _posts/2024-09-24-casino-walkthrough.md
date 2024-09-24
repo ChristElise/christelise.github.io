@@ -1,7 +1,7 @@
 ---
 title: CTF Walkthrough for HackMyVM Machine Casino
 category: [Walkthrough, CTF]
-tags: [HackMyVM, Writeup, Reverse Engineering]   
+tags: [HackMyVM, Writeup, Reverse Engineering, SSRF]   
 image:
   path: /assets/img/posts/walthrough/hackmyvm/2024-09-24-casino/box-casino.png
 ---
