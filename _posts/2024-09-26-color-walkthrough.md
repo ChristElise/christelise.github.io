@@ -18,9 +18,9 @@ Download link: [Color](https://downloads.hackmyvm.eu/color.zip)<br>
 1) Nmap<br>
 2) ffuf<br>
 3) Cutter<br>
-4) arpspoof
-5) dnsspoof
-6) stegseek
+4) arpspoof<br>
+5) dnsspoof<br>
+6) stegseek<br>
 
 ## Reconnaissance
 
