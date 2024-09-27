@@ -309,6 +309,34 @@ john@Breakme:~$ ls
 internal  user1.txt
 ```
 
+We can use this account to further our enumeration of the target. We will notice that the local user Youcef home directory is in our group and that this directory contains the SUID bit set for the user Youcef. 
+```
+john@Breakme:/home$ ls -l
+total 24
+drwxr-xr-x 4 john   john  4096 Aug  3  2023 john
+drwx------ 2 root   root 16384 Aug 17  2021 lost+found
+drwxr-x--- 4 youcef john  4096 Aug  3  2023 youcef
+john@Breakme:/home$ ls youcef
+readfile <SNIP>
+```
+
+Since binary looks like a custom binary. Before running this binary we must first transfer it to our attack host. We can start a Python HTTP server in the directory where the readfile binary is found on the target and download the binary on our attack host using wget.
+```bash
+john@Breakme:/home/youcef$ python3 -m http.server
+```
+
+```bash
+┌──(pentester㉿kali)-[~/Desktop/TryHackMe/Breakme/Misc File]
+└─$ wget 10.10.64.230:8000/readfile
+```
+
+We can load this binary in Cutter and decompile it using the Ghidra decompiler.
+```bash
+┌──(pentester㉿kali)-[~/Desktop/TryHackMe/Breakme/Misc File]
+└─$ cutter ./readfile&
+```
+![](/assets/img/posts/walthrough/tryhackme/2024-09-27-breakme/readfile-decompile.png)
+
 
 
 
