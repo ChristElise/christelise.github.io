@@ -1,14 +1,14 @@
 ---
-title: CTF Walkthrough for TryHackMe Machine Blurry
+title: CTF Walkthrough for TryHackMe Machine Cheese CTF
 date: 2024-09-25 00:00:00 +0300
 categories: [Walkthrough, CTF]
 tags: [TryHackMe, Writeup, LFI]   
 image:
-  path: /assets/img/posts/walthrough/tryhackme/2024-09-25-blurry/box-cheesectf.png
+  path: /assets/img/posts/walthrough/tryhackme/2024-09-25-cheese/box-cheesectf.png
 ---
 
 ## Introduction
-Greetings everyone, in this walkthrough, we will talk about Blurry a TryHackMe machine. This walkthrough is not only meant to catch the flag but also to demonstrate how a penetration tester will approach this machine in a real-world assessment.
+Greetings everyone, in this walkthrough, we will talk about Cheese CTF a TryHackMe machine. This walkthrough is not only meant to catch the flag but also to demonstrate how a penetration tester will approach this machine in a real-world assessment.
 ### Machine Description
 Name: Cheese CTF<br>
 Difficulty: Easy<br>
@@ -65,7 +65,7 @@ Nmap done: 1 IP address (1 host up) scanned in 2126.31 seconds
 ```
 
 The target has many open ports but our interest here will be port 80 which appears to be occupied by an Apache2 web server. Let's visit the web application to see its function.
-![](/assets/img/posts/walthrough/tryhackme/2024-09-25-blurry/1-browse.png)
+![](/assets/img/posts/walthrough/tryhackme/2024-09-25-cheese/1-browse.png)
 
 This looks like a simple web application for a cheese shop. This interface looks normal so, let's fuzz for hidden directories.
 ```bash
@@ -91,10 +91,10 @@ server-status           [Status: 403, Size: 278, Words: 20, Lines: 10, Duration:
 ```
 
 In the results above, we can see many hidden files and one directory called image. When we visit the messages.html page, we will notice that it contains a link.
-![](/assets/img/posts/walthrough/tryhackme/2024-09-25-blurry/messages-page.png)
+![](/assets/img/posts/walthrough/tryhackme/2024-09-25-cheese/messages-page.png)
 
 This link uses a PHP filter to load the page **secretmessageforadmin**. We can try to uses common PHP filters to load internal pages such as the convert.base64-encode to load the secret-script.php page.
-![](/assets/img/posts/walthrough/tryhackme/2024-09-25-blurry/lfi-page.png)
+![](/assets/img/posts/walthrough/tryhackme/2024-09-25-cheese/lfi-page.png)
 
 This loads the encoded page successfully. If we decode the base64 string we will see that the PHP include function is being used without sanitisation to include files. We can prove this by including the targets /etc/passwd file to enumerate local users on the system.
 ```bash
