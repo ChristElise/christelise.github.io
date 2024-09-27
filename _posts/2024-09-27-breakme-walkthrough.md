@@ -274,9 +274,6 @@ Lastly, when we enter a file name we will see that the file name entered is chec
 
 ## Post Exploitation
 
-![](/assets/img/posts/walthrough/tryhackme/2024-09-27-breakme/)
-![](/assets/img/posts/walthrough/tryhackme/2024-09-27-breakme/)
-![](/assets/img/posts/walthrough/tryhackme/2024-09-27-breakme/)
 
 
 
