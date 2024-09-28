@@ -88,8 +88,10 @@ We can see that our target's web application indeed uses the WordPress CMS. We c
 [+] Elapsed time: 00:00:15
 ```
 
-This enumeration shows that the WordPress instance uses an outdated version of the wp-data-access plugin. Version 5.3.5 used by our target appears to be vulnerable to a privilege escalation vulnerability.
+This enumeration shows that the WordPress instance uses an outdated version of the wp-data-access plugin. Version 5.3.5 used by our target is vulnerable to a privilege escalation vulnerability.
 ![](/assets/img/posts/walthrough/tryhackme/2024-09-27-breakme/vuln-discovery.png)
+
+## Exploitation
 
 This vulnerability requires us to have an account on the targeted WordPress instance. For this reason, we need to find valid user credentials to log into the WordPress instance. We can do this by first enumerating valid usernames.
 ```bash
