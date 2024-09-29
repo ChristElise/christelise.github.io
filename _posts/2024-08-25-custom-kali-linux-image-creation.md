@@ -7,7 +7,7 @@ author: christ
 ---
 
 
-This repository explains everything that a beginner hacker needs to know to build a custom Kali Linux ISO image with their desired tools incorporated in the ISO image. Doing so increases efficiency because during every Kali Linux install, all your desired tools will be integrated and there is no need to "apt-get install" anymore for those specific tools. Enjoy the post and have fun. Don't forget to continue hacking.
+This post explains everything that a beginner hacker needs to know to build a custom Kali Linux ISO image with their desired tools incorporated in the ISO image. Doing so increases efficiency because during every Kali Linux install, all your desired tools will be integrated and there is no need to "apt-get install" anymore for those specific tools. Enjoy the post and have fun. Don't forget to continue hacking.
 
 ---
 
