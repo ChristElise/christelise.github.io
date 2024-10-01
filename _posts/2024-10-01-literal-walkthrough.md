@@ -16,9 +16,8 @@ OS: Linux<br>
 Download link: [Literal](https://downloads.hackmyvm.eu/literal.zip)<br>
 ### Tools used
 1) Nmap<br>
-2) ffuf<br>
-3) SQLMap<br>
-4) Hashcat<br>
+2) SQLMap<br>
+3) Hashcat<br>
    
 ## Reconnaissance
 
