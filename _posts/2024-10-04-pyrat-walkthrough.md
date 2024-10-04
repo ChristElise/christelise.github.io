@@ -240,9 +240,8 @@ This tool appears to be a CTF toolkit used to run a backdoor on the system. This
 ![](/assets/img/posts/walthrough/tryhackme/2024-10-04-pyrat/code-analyses-1.png)
 ![](/assets/img/posts/walthrough/tryhackme/2024-10-04-pyrat/get_admin-function.png)
 
-We can see that the authentication is very simple. After we have typed admin and pressed Enter, we are prompted with the string *Password:* where we are supposed to enter the password. If this password is corrected we are greeted with a Welcome message otherwise we are given two other trials. We can attempt a brute force attack manually but this shall take us too much time. Let's automate the process with this Python script.
-```python
-# Import socket module 
+We can see that the authentication is very simple. After we have typed admin and pressed Enter, we are prompted with the string *Password:* where we are supposed to enter the password. If this password is corrected we are greeted with a Welcome message otherwise we are given two other trials. We can manually attempt a brute force attack, but this will take too long. Let's automate the process with this Python script.
+```python 
 import socket
 import sys
          
