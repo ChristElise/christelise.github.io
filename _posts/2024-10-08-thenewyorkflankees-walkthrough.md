@@ -1,6 +1,6 @@
 ---
 title: CTF Walkthrough for TryHackMe Machine New York Flankees
-date: 2024-10-04 00:00:00 +0300
+date: 2024-10-08 00:00:00 +0300
 categories: [Walkthrough, CTF]
 tags: [TryHackMe, Writeup, Oracle padding attack]   
 image:
