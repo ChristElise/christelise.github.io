@@ -4,7 +4,7 @@ date: 2024-10-16 00:00:00 +0300
 categories: [Walkthrough, CTF]
 tags: [TryHackMe, Writeup, Restricted Shell, LFI]   
 image:
-  path: /assets/img/posts/walthrough/tryhackme/2024-10-16-airplane/box-airplane.png
+  path: /assets/img/posts/walthrough/tryhackme/2024-10-16-airplane/box-airplane.svg
 ---
 
 ## Introduction
