@@ -2,7 +2,7 @@
 title: CTF Walkthrough for TryHackMe Machine Publisher
 date: 2024-10-11 00:00:00 +0300
 categories: [Walkthrough, CTF]
-tags: [TryHackMe, Writeup]   
+tags: [TryHackMe, Writeup, Restricted Shell]   
 image:
   path: /assets/img/posts/walthrough/tryhackme/2024-10-11-publisher/box-publisher.png
 ---
@@ -16,7 +16,6 @@ Operating System: Linux<br>
 Machine link: [Publisher](https://tryhackme.com/r/room/publisher)<br>
 ### Tools used
 1) Nmap<br>
-2) <br>
 
 ## Reconnaissance
 
