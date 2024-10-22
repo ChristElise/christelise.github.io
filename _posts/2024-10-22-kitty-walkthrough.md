@@ -1,6 +1,6 @@
 ---
 title: CTF Walkthrough for TryHackMe Machine Kitty
-date: 2024-10-20 00:00:00 +0300
+date: 2024-10-22 00:00:00 +0300
 categories: [Walkthrough, CTF]
 tags: [TryHackMe, Writeup, SQLi]   
 image:
