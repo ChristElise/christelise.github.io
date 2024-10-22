@@ -71,7 +71,7 @@ Nmap done: 1 IP address (1 host up) scanned in 170.25 seconds
 ```
 
 ## First Flag
-We ca see that the target runs an SSH server and three web servers on ports 80, 8000, and 8080. The scan result reveals the presence of a `robots.txt` file on the web application running on port 8000. We can access this file directly to read its content.
+We can see that the target runs an SSH server and three web servers on ports 80, 8000, and 8080. The scan result reveals the presence of a `robots.txt` file on the web application running on port 8000. We can access this file directly to read its content.
 ```bash
 ┌──(pentester㉿kali)-[~/…/Challenge/Clocky/Scans/Web]
 └─$ curl 10.10.46.31:8000/robots.txt                                                                                          
