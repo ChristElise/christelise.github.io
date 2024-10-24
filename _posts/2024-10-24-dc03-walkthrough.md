@@ -79,7 +79,7 @@ The target runs Kerberos, LDAP, and SMB, we can deduce from this that the target
 
 ## Exploitation
 
-Since we are on the same LAN as the domain controller we can perform LLMNR | NBT-NS poisoning attack using the responder.
+Since we are on the same LAN as the domain controller we can perform LLMNR \| NBT-NS poisoning attack using the responder.
 ```bash
 ┌──(pentester㉿kali)-[~/Desktop/HackMyVM/DC03/Scans/AD Enumeration]
 └─$ sudo responder -I eth0
@@ -238,4 +238,4 @@ Mode                 LastWriteTime         Length Name
 
 ## Conclusion
 
-Congratulations! In this walkthrough, you have used LLMNR | NBT-NS poisoning attack to capture and crack the password of a member of the Account Operators group. Finally, you used the Account Operators group membership privileges to change the password of an account with domain admin privileges through nested group memebrship. This machine was designed to show how the use of weak passwords and deprecated protocols could seriously affect the security posture of an organisation. Thank you for following up on this walkthrough.
+Congratulations! In this walkthrough, you have used LLMNR \| NBT-NS poisoning attack to capture and crack the password of a member of the Account Operators group. Finally, you used the Account Operators group membership privileges to change the password of an account with domain admin privileges through nested group memebrship. This machine was designed to show how the use of weak passwords and deprecated protocols could seriously affect the security posture of an organisation. Thank you for following up on this walkthrough.
