@@ -2,7 +2,7 @@
 title: CTF Walkthrough for HackMyVM Machine DC02
 date: 2024-10-18 00:00:00 +0300
 category: [Walkthrough, CTF]
-tags: [HackMyVM, Writeup, Kerberoasting,ASREPRoasting, Pass the Hash attack, DCSync attack]   
+tags: [HackMyVM, Writeup, Active Directory, Kerberoasting, ASREPRoasting, Pass the Hash attack, DCSync attack]   
 image:
   path: /assets/img/posts/walthrough/hackmyvm/2024-10-18-dc02/box-dc02.png
 ---
