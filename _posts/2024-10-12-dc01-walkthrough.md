@@ -70,7 +70,7 @@ Service detection performed. Please report any incorrect results at https://nmap
 Nmap done: 1 IP address (1 host up) scanned in 52.94 seconds
 ```
 
-The target runs Kerberos, LDAP, and SMB, we can deduce from this that the target is a Windows domain controller. We can see in the scan result the domain i.e. `SOUPEDECODE.LOCAL` of the target and also the name of the domain controller `DC01`. We can add this information to our /etc/hosts file.
+The target runs Kerberos, LDAP, and SMB, we can deduce from this that the target is a Windows domain controller. We can see in the scan's result the domain i.e. `SOUPEDECODE.LOCAL` of the target and also the name of the domain controller `DC01`. We can add this information to our /etc/hosts file.
 ```bash
 ┌──(pentester㉿kali)-[~/…/HackMyVM/DC01/Scans/Service]
 └─$ echo "10.0.2.31\tSOUPEDECODE.LOCAL DC01.SOUPEDECODE.LOCAL" | sudo tee -a /etc/hosts
