@@ -1,6 +1,6 @@
 ---
 title: CTF Walkthrough for HackMyVM Machine Zero
-date: 2024-10-24 00:00:00 +0300
+date: 2024-10-25 00:00:00 +0300
 category: [Walkthrough, CTF, CVE]
 tags: [HackMyVM, Writeup]   
 image:
