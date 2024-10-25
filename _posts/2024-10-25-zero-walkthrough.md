@@ -284,6 +284,7 @@ dir C:\Users\ruycr4ft\Desktop
 
 C:\Windows\system32>
 ```
+
 ## Conclusion
 
 Congratulations! In this walkthrough, you have exploited CVE-2017-0143 to compromise a Windows domain controller. This machine was designed to show how improper update practices of computers in a network could seriously affect the security posture of an organisation. Thank you for following up on this walkthrough.
