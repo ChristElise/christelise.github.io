@@ -12,7 +12,7 @@ Greetings everyone, in this walkthrough, we will talk about Umbrella a TryHackMe
 ### Machine Description
 Name: Umbrella<br>
 Difficulty: Medium<br>
-Operating System: Umbrella<br>
+Operating System: Linux<br>
 Machine link: [Umbrella](https://tryhackme.com/r/room/umbrella)<br>
 ### Tools used
 1) Nmap<br>
