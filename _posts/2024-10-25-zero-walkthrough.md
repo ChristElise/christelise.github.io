@@ -1,8 +1,8 @@
 ---
 title: CTF Walkthrough for HackMyVM Machine Zero
 date: 2024-10-25 00:00:00 +0300
-category: [Walkthrough, CTF, CVE]
-tags: [HackMyVM, Writeup]   
+category: [Walkthrough, CTF]
+tags: [HackMyVM, Writeup, CVE]   
 image:
   path: /assets/img/posts/walthrough/hackmyvm/2024-10-25-zero/box-zero.png
 ---
