@@ -11,7 +11,7 @@ image:
 Greetings everyone, in this walkthrough, we will talk about WhyHackMe a TryHackMe machine. This walkthrough is not only meant to catch the flag but also to demonstrate how a penetration tester will approach this machine in a real-world assessment.
 ### Machine Description
 Name: WhyHackMe<br>
-Difficulty: WhyHackMe<br>
+Difficulty: Medium<br>
 Operating System: Linux<br>
 Machine link: [WhyHackMe](https://tryhackme.com/r/room/whyhackme)<br>
 ### Tools used
