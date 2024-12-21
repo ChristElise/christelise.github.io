@@ -158,6 +158,9 @@ To obtain a more stable shell we can transfer Marcus's SSH private key to our at
 ![](/assets/img/posts/walthrough/hackthebox/2024-12-21-monitorsthree/key-trans-3.png){: .center}
 ![](/assets/img/posts/walthrough/hackthebox/2024-12-21-monitorsthree/ssh-auth.png){: .center}
 
+We can start our enumeration by enumerating ports listening locally on the target.
+![](/assets/img/posts/walthrough/hackthebox/2024-12-21-monitorsthree/internal-ports.png){: .center}
+
 We can download Chisel on the target and scan those ports to identify running services.
 We need to start a Python server in the directory containing Chisel.
 ```bash
@@ -248,7 +251,3 @@ Now that we have backed up the root flag, we can use Duplicati to restore that f
 
 After restoring the backups, we can read the root file.
 ![](/assets/img/posts/walthrough/hackthebox/2024-12-21-monitorsthree/root-flag.png){: .center}
-
-We can start our enumeration by enumerating ports listening locally on the target.
-![](/assets/img/posts/walthrough/hackthebox/2024-12-21-monitorsthree/internal-ports.png){: .center}
-
