@@ -18,9 +18,9 @@ Download link: [Arroutada](https://downloads.hackmyvm.eu/arroutada.zip)<br>
 1) fping<br>
 2) Nmap<br>
 3) ffuf<br>
-4) Hashcat
-5) Libreoffice2john
-6) Chisel
+4) Hashcat<br>
+5) Libreoffice2john<br>
+6) Chisel<br>
 
 ## Reconnaissance
  We first start by sending ICMP requests to all IPs in our subnet to identify our target.
